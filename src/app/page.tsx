@@ -16,7 +16,7 @@ import {
 } from "@once-ui-system/core";
 import { home, about, person, baseURL, routes } from "@/resources";
 import { Projects } from "@/components/work/Projects";
-import { CertificationCard } from "@/components/certifications/CertificationCard";
+//import { CertificationCard } from "@/components/certifications/CertificationCard";
 import { GitHubCalendar } from "@/components/GitHubCalendar";
 
 export async function generateMetadata() {
