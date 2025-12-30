@@ -51,7 +51,7 @@ export default function Home() {
           image: `${baseURL}${person.avatar}`,
         }}
       />
-      
+
       {/* Hero Section */}
       <Column fillWidth horizontal="center" gap="m">
         <Column maxWidth="s" horizontal="center" align="center">
@@ -93,10 +93,10 @@ export default function Home() {
 
           {/* Introduction */}
           <RevealFx translateY="8" delay={0.3} fillWidth horizontal="center" paddingBottom="32">
-            <Text 
-              wrap="balance" 
-              onBackground="neutral-weak" 
-              variant="body-default-l" 
+            <Text
+              wrap="balance"
+              onBackground="neutral-weak"
+              variant="body-default-l"
               align="center"
               style={{ maxWidth: '600px' }}
             >
@@ -220,7 +220,7 @@ export default function Home() {
           <Heading as="h2" variant="heading-strong-xl" align="center">
             GitHub Contributions
           </Heading>
-          <GitHubCalendar username="Sridatta-Bharadwaj" />
+          <GitHubCalendar />
         </Column>
       </RevealFx>
     </Column>
