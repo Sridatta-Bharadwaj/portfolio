@@ -1,6 +1,5 @@
-import { Column, Heading, Meta, Schema } from "@once-ui-system/core";
+import { Column, Heading, Meta, Schema, Text, Button, Row } from "@once-ui-system/core";
 import { baseURL, about, person, work } from "@/resources";
-import { Projects } from "@/components/work/Projects";
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -14,7 +13,7 @@ export async function generateMetadata() {
 
 export default function Work() {
   return (
-    <Column maxWidth="m" paddingTop="24">
+    <Column maxWidth="m" paddingY="24" gap="xl">
       <Schema
         as="webPage"
         baseURL={baseURL}
@@ -28,10 +27,74 @@ export default function Work() {
           image: `${baseURL}${person.avatar}`,
         }}
       />
-      <Heading marginBottom="l" variant="heading-strong-xl" align="center">
-        {work.title}
-      </Heading>
-      <Projects />
+
+      {/* Header */}
+      <Column fillWidth gap="m" horizontal="center" align="center" paddingY="xl">
+        <Heading variant="display-strong-xl" align="center">
+          Projects
+        </Heading>
+        <Text 
+          variant="body-default-l" 
+          onBackground="neutral-weak" 
+          align="center"
+          wrap="balance"
+          style={{ maxWidth: '600px' }}
+        >
+          Coming soon! I'm currently working on exciting projects that will be showcased here.
+        </Text>
+      </Column>
+
+      {/* Empty State with Illustration */}
+      <Column 
+        fillWidth 
+        horizontal="center" 
+        align="center" 
+        gap="l"
+        paddingY="xl"
+        style={{ minHeight: '400px' }}
+      >
+        <div style={{
+          fontSize: '120px',
+          opacity: 0.3,
+          filter: 'grayscale(100%)',
+        }}>
+          🚧
+        </div>
+        
+        <Column gap="m" horizontal="center" align="center">
+          <Heading variant="heading-strong-l" align="center">
+            Under Construction
+          </Heading>
+          <Text 
+            variant="body-default-m" 
+            onBackground="neutral-weak" 
+            align="center"
+            style={{ maxWidth: '400px' }}
+          >
+            I'm working on some amazing projects. Check back soon to see what I've been building!
+          </Text>
+        </Column>
+
+        {/* CTA Buttons */}
+        <Row gap="12" paddingTop="l">
+          <Button
+            href="/"
+            variant="secondary"
+            size="m"
+            prefixIcon="home"
+          >
+            Go Home
+          </Button>
+          <Button
+            href="/about"
+            variant="secondary"
+            size="m"
+            prefixIcon="person"
+          >
+            Learn More About Me
+          </Button>
+        </Row>
+      </Column>
     </Column>
   );
 }
