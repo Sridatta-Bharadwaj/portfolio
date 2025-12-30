@@ -5,6 +5,45 @@ import { Column } from "@once-ui-system/core";
 import { person, social, about, work } from "@/resources";
 
 const CLIPage = () => {
+  // Add scrollbar styles dynamically
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      .cli-terminal::-webkit-scrollbar {
+        width: 8px;
+      }
+      .cli-terminal::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .cli-terminal::-webkit-scrollbar-thumb {
+        background: var(--neutral-on-background-weak);
+        border-radius: 4px;
+        border: 2px solid var(--page-background);
+      }
+      .cli-terminal::-webkit-scrollbar-thumb:hover {
+        background: var(--neutral-on-background);
+        cursor: pointer;
+      }
+    `;
+    document.head.appendChild(style);
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
+  // Color palette from Once-UI design system
+  const colors = {
+    brand: 'var(--brand-on-background)',
+    brandWeak: 'var(--brand-on-background-weak)',
+    accent: 'var(--accent-on-background)',
+    accentWeak: 'var(--accent-on-background-weak)',
+    neutral: 'var(--neutral-on-background)',
+    neutralWeak: 'var(--neutral-on-background-weak)',
+    neutralAlpha: 'var(--neutral-alpha-medium)',
+    background: 'var(--page-background)',
+    backgroundContent: 'var(--background-surface)',
+    border: 'var(--neutral-alpha-weak)',
+  };
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<Array<{type: string, content: any}>>([]);
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
@@ -19,12 +58,12 @@ const CLIPage = () => {
       action: () => {
         return (
           <div className="space-y-2">
-            <div className="text-cyan-400 font-bold mb-4">Available Commands:</div>
+            <div style={{ color: colors.brand, fontWeight: 'bold', marginBottom: '1rem' }}>Available Commands:</div>
             {Object.entries(commands).map(([cmd, info]) => (
               <div key={cmd} className="ml-4 flex items-start gap-3 group hover:translate-x-2 transition-transform">
-                <span className="text-green-400 font-mono min-w-[120px]">{cmd}</span>
-                <span className="text-gray-500">→</span>
-                <span className="text-gray-400 group-hover:text-gray-300 transition-colors">{info.description}</span>
+                <span style={{ color: colors.accent, fontFamily: 'monospace', minWidth: '120px' }}>{cmd}</span>
+                <span style={{ color: colors.neutralWeak }}>→</span>
+                <span style={{ color: colors.neutralWeak }} className="group-hover:opacity-100 transition-opacity">{info.description}</span>
               </div>
             ))}
           </div>
@@ -35,33 +74,33 @@ const CLIPage = () => {
       description: 'Learn about me',
       action: () => (
         <div className="space-y-3">
-          <div className="text-cyan-400 text-xl font-bold mb-2">
+          <div style={{ color: colors.brand, fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>
             ╭─ About {person.name}
           </div>
-          <div className="text-gray-300 ml-4 space-y-2">
+          <div style={{ color: colors.neutral, marginLeft: '1rem' }} className="space-y-2">
             <p className="flex items-center gap-2">
-              <span className="text-green-400">▸</span>
-              <span className="text-gray-500">Name:</span> 
+              <span style={{ color: colors.accent }}>▸</span>
+              <span style={{ color: colors.neutralWeak }}>Name:</span> 
               <span>{person.name}</span>
             </p>
             <p className="flex items-center gap-2">
-              <span className="text-green-400">▸</span>
-              <span className="text-gray-500">Role:</span> 
+              <span style={{ color: colors.accent }}>▸</span>
+              <span style={{ color: colors.neutralWeak }}>Role:</span> 
               <span>{person.role}</span>
             </p>
             <p className="flex items-center gap-2">
-              <span className="text-green-400">▸</span>
-              <span className="text-gray-500">Location:</span> 
+              <span style={{ color: colors.accent }}>▸</span>
+              <span style={{ color: colors.neutralWeak }}>Location:</span> 
               <span>{person.location}</span>
             </p>
             {person.languages && person.languages.length > 0 && (
               <p className="flex items-center gap-2">
-                <span className="text-green-400">▸</span>
-                <span className="text-gray-500">Languages:</span> 
+                <span style={{ color: colors.accent }}>▸</span>
+                <span style={{ color: colors.neutralWeak }}>Languages:</span> 
                 <span>{person.languages.join(', ')}</span>
               </p>
             )}
-            <div className="mt-4 text-gray-400 leading-relaxed border-l-2 border-cyan-400 pl-4">
+            <div style={{ color: colors.neutralWeak, marginTop: '1rem', borderLeft: `2px solid ${colors.brand}`, paddingLeft: '1rem', lineHeight: '1.6' }}>
               {about.intro.description}
             </div>
           </div>
@@ -72,18 +111,18 @@ const CLIPage = () => {
       description: 'View technical skills',
       action: () => (
         <div className="space-y-3">
-          <div className="text-cyan-400 text-xl font-bold mb-2">╭─ Technical Skills</div>
-          <div className="ml-4 space-y-3">
+          <div style={{ color: colors.brand, fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>╭─ Technical Skills</div>
+          <div style={{ marginLeft: '1rem' }} className="space-y-3">
             {about.technical.skills.map((skill, index) => (
-              <div key={index} className="space-y-2 border-l-2 border-gray-700 pl-4 hover:border-green-400 transition-colors">
-                <div className="text-green-400 font-semibold">{skill.title}</div>
+              <div key={index} className="space-y-2" style={{ borderLeft: `2px solid ${colors.neutralAlpha}`, paddingLeft: '1rem' }}>
+                <div style={{ color: colors.accent, fontWeight: 'semibold' }}>{skill.title}</div>
                 {skill.description && (
-                  <div className="text-gray-400 text-sm">{skill.description}</div>
+                  <div style={{ color: colors.neutralWeak, fontSize: '0.875rem' }}>{skill.description}</div>
                 )}
                 {skill.tags && skill.tags.length > 0 && (
                   <div className="flex gap-2 flex-wrap">
                     {skill.tags.map((tag, i) => (
-                      <span key={i} className="text-xs bg-gray-800 text-gray-300 px-2 py-1 rounded">
+                      <span key={i} style={{ fontSize: '0.75rem', backgroundColor: colors.backgroundContent, color: colors.neutral, padding: '0.25rem 0.5rem', borderRadius: '0.25rem' }}>
                         {tag.name}
                       </span>
                     ))}
@@ -99,19 +138,19 @@ const CLIPage = () => {
       description: 'View work experience',
       action: () => (
         <div className="space-y-3">
-          <div className="text-cyan-400 text-xl font-bold mb-2">╭─ Work Experience</div>
-          <div className="ml-4 space-y-4">
+          <div style={{ color: colors.brand, fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>╭─ Work Experience</div>
+          <div style={{ marginLeft: '1rem' }} className="space-y-4">
             {about.work.experiences.map((exp, index) => (
-              <div key={index} className="border-l-2 border-blue-400 pl-4 space-y-2">
+              <div key={index} style={{ borderLeft: `2px solid ${colors.accent}`, paddingLeft: '1rem' }} className="space-y-2">
                 <div className="flex justify-between items-start">
-                  <div className="text-green-400 font-semibold text-lg">{exp.company}</div>
-                  <div className="text-gray-500 text-sm">{exp.timeframe}</div>
+                  <div style={{ color: colors.accent, fontWeight: 'semibold', fontSize: '1.125rem' }}>{exp.company}</div>
+                  <div style={{ color: colors.neutralWeak, fontSize: '0.875rem' }}>{exp.timeframe}</div>
                 </div>
-                <div className="text-blue-300 text-sm">{exp.role}</div>
+                <div style={{ color: colors.brand, fontSize: '0.875rem' }}>{exp.role}</div>
                 <div className="space-y-1 mt-2">
                   {exp.achievements.map((achievement, i) => (
-                    <div key={i} className="text-gray-400 text-sm flex items-start gap-2">
-                      <span className="text-yellow-400 mt-1">•</span>
+                    <div key={i} style={{ color: colors.neutralWeak, fontSize: '0.875rem' }} className="flex items-start gap-2">
+                      <span style={{ color: colors.accent }}>•</span>
                       <span>{achievement}</span>
                     </div>
                   ))}
@@ -126,12 +165,12 @@ const CLIPage = () => {
       description: 'View education background',
       action: () => (
         <div className="space-y-3">
-          <div className="text-cyan-400 text-xl font-bold mb-2">╭─ Education</div>
-          <div className="ml-4 space-y-3">
+          <div style={{ color: colors.brand, fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>╭─ Education</div>
+          <div style={{ marginLeft: '1rem' }} className="space-y-3">
             {about.studies.institutions.map((inst, index) => (
-              <div key={index} className="border-l-2 border-purple-400 pl-4">
-                <div className="text-green-400 font-semibold">{inst.name}</div>
-                <div className="text-gray-400 text-sm mt-1">{inst.description}</div>
+              <div key={index} style={{ borderLeft: `2px solid ${colors.neutralAlpha}`, paddingLeft: '1rem' }}>
+                <div style={{ color: colors.accent, fontWeight: 'semibold' }}>{inst.name}</div>
+                <div style={{ color: colors.neutralWeak, fontSize: '0.875rem', marginTop: '0.25rem' }}>{inst.description}</div>
               </div>
             ))}
           </div>
@@ -142,21 +181,21 @@ const CLIPage = () => {
       description: 'Get contact information',
       action: () => (
         <div className="space-y-3">
-          <div className="text-cyan-400 text-xl font-bold mb-2">╭─ Contact Information</div>
-          <div className="ml-4 space-y-2">
+          <div style={{ color: colors.brand, fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>╭─ Contact Information</div>
+          <div style={{ marginLeft: '1rem' }} className="space-y-2">
             <div className="flex items-center gap-2">
-              <span className="text-yellow-400">📧</span>
-              <span className="text-gray-500">Email:</span>
-              <a href={`mailto:${person.email}`} className="text-blue-400 hover:underline">
+              <span>📧</span>
+              <span style={{ color: colors.neutralWeak }}>Email:</span>
+              <a href={`mailto:${person.email}`} style={{ color: colors.brand }} className="hover:underline">
                 {person.email}
               </a>
             </div>
             {social.map((item, index) => (
               item.link && (
                 <div key={index} className="flex items-center gap-2">
-                  <span className="text-yellow-400">🔗</span>
-                  <span className="text-gray-500">{item.name}:</span>
-                  <a href={item.link} className="text-blue-400 hover:underline" target="_blank" rel="noopener noreferrer">
+                  <span>🔗</span>
+                  <span style={{ color: colors.neutralWeak }}>{item.name}:</span>
+                  <a href={item.link} style={{ color: colors.brand }} className="hover:underline" target="_blank" rel="noopener noreferrer">
                     {item.name} Profile
                   </a>
                 </div>
@@ -169,7 +208,7 @@ const CLIPage = () => {
     clear: {
       description: 'Clear terminal screen',
       action: () => {
-        setHistory([]);
+        setHistory([{ type: 'output', content: getWelcomeBanner() }]);
         return null;
       }
     },
@@ -177,42 +216,49 @@ const CLIPage = () => {
       description: 'Go to projects page',
       action: () => {
         window.location.href = '/work';
-        return <div className="text-gray-400">Redirecting to projects page...</div>;
+        return <div style={{ color: colors.neutralWeak }}>Redirecting to projects page...</div>;
       }
     },
     certifications: {
       description: 'View certifications',
       action: () => {
         window.location.href = '/certifications';
-        return <div className="text-gray-400">Redirecting to certifications page...</div>;
+        return <div style={{ color: colors.neutralWeak }}>Redirecting to certifications page...</div>;
       }
     },
     home: {
       description: 'Go to home page',
       action: () => {
         window.location.href = '/';
-        return <div className="text-gray-400">Redirecting to home page...</div>;
+        return <div style={{ color: colors.neutralWeak }}>Redirecting to home page...</div>;
       }
     },
     whoami: {
       description: 'Display current user',
-      action: () => <div className="text-green-400">guest@{person.firstName.toLowerCase()}-portfolio</div>
+      action: () => <div style={{ color: colors.accent }}>guest@{person.firstName.toLowerCase()}-portfolio</div>
     },
     date: {
       description: 'Display current date and time',
       action: () => {
         const now = new Date();
         return (
-          <div className="text-gray-300">
+          <div style={{ color: colors.neutral }}>
             <div>{now.toLocaleString('en-US', { dateStyle: 'full', timeStyle: 'long' })}</div>
-            <div className="text-gray-500 text-sm mt-1">Timezone: {person.location}</div>
+            <div style={{ color: colors.neutralWeak, fontSize: '0.875rem', marginTop: '0.25rem' }}>Timezone: {person.location}</div>
           </div>
         );
       }
     },
     echo: {
       description: 'Echo a message',
-      action: (args: string[]) => <div className="text-gray-300">{args.join(' ')}</div>
+      action: (args: string[]) => <div style={{ color: colors.neutral }}>{args.join(' ')}</div>
+    },
+    gui: {
+      description: 'Switch to GUI portfolio',
+      action: () => {
+        window.location.href = '/';
+        return <div style={{ color: colors.neutralWeak }}>Switching to GUI portfolio...</div>;
+      }
     },
     banner: {
       description: 'Display welcome banner',
@@ -221,26 +267,98 @@ const CLIPage = () => {
   };
 
   const getWelcomeBanner = () => (
-    <div className="space-y-3 mb-6">
-      <div className="text-cyan-400 text-xl font-bold">
-        ╔═══════════════════════════════════════════════════════╗
-      </div>
-      <div className="text-center space-y-2">
-        <div className="text-cyan-400 text-2xl font-bold">
-          Welcome to {person.firstName}'s Portfolio Terminal
+    <div style={{ marginBottom: '1.5rem' }}>
+      {/* Decorative Top Line */}
+      <div style={{
+        height: '2px',
+        background: `linear-gradient(90deg, transparent 0%, ${colors.brand} 20%, ${colors.brand} 80%, transparent 100%)`,
+        marginBottom: '1rem'
+      }} />
+
+      {/* Main Content */}
+      <div style={{ marginLeft: '0.5rem' }}>
+        {/* Greeting - Name */}
+        <div style={{
+          fontSize: '2rem',
+          fontWeight: '900',
+          marginBottom: '0.1rem',
+          color: colors.brand,
+          letterSpacing: '-0.5px'
+        }}>
+          ▶ {person.firstName}'s Portfolio
         </div>
-        <div className="text-gray-400 text-sm">
-          {person.role} | {person.location}
+        
+        {/* Subtitle with role */}
+        <div style={{
+          fontSize: '0.95rem',
+          color: colors.accent,
+          fontWeight: '600',
+          marginBottom: '0.75rem',
+          letterSpacing: '0.5px'
+        }}>
+        </div>
+
+        {/* Info Grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'auto 1fr',
+          gap: '0.5rem',
+          marginBottom: '1rem',
+          padding: '0.75rem',
+          background: `${colors.brand}08`,
+          borderLeft: `3px solid ${colors.accent}`,
+          borderRadius: '0.25rem'
+        }}>
+          <div style={{ color: colors.accent, fontWeight: 'bold' }}>📍</div>
+          <div><div style={{ color: colors.neutral, fontWeight: '500', fontSize: '0.9rem' }}>Location</div><div style={{ color: colors.neutralWeak, fontSize: '0.8rem' }}>{person.location}</div></div>
+          
+          <div style={{ color: colors.accent, fontWeight: 'bold' }}>✦</div>
+          <div><div style={{ color: colors.neutral, fontWeight: '500', fontSize: '0.9rem' }}>Role</div><div style={{ color: colors.neutralWeak, fontSize: '0.8rem' }}>{person.role}</div></div>
         </div>
       </div>
-      <div className="text-cyan-400 text-xl font-bold">
-        ╚═══════════════════════════════════════════════════════╝
+
+      {/* Quick Commands Section */}
+      <div style={{
+        padding: '0.75rem',
+        background: `${colors.accent}08`,
+        borderLeft: `3px solid ${colors.brand}`,
+        borderRadius: '0.25rem',
+        marginBottom: '1rem'
+      }}>
+        <div style={{
+          color: colors.brand,
+          fontSize: '0.8rem',
+          fontWeight: '600',
+          marginBottom: '0.5rem',
+          textTransform: 'uppercase',
+          letterSpacing: '1px'
+        }}>
+          ↳ Quick Start
+        </div>
+        <div style={{
+          color: colors.neutral,
+          fontSize: '0.8rem',
+          lineHeight: '1.4',
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '0.5rem'
+        }}>
+          <div><span style={{ color: colors.accent, fontWeight: 'bold' }}>help</span> — List all commands</div>
+          <div><span style={{ color: colors.accent, fontWeight: 'bold' }}>about</span> — About me</div>
+          <div><span style={{ color: colors.accent, fontWeight: 'bold' }}>skills</span> — My skills</div>
+          <div><span style={{ color: colors.accent, fontWeight: 'bold' }}>work</span> — View portfolio</div>
+        </div>
       </div>
-      <div className="text-gray-400 mt-4">
-        Type <span className="text-green-400 font-semibold">'help'</span> to see available commands
-      </div>
-      <div className="text-gray-500 text-sm">
-        💡 Tip: Use arrow keys to navigate command history, Tab for autocomplete
+
+      {/* Tips Section */}
+      <div style={{
+        color: colors.neutralWeak,
+        fontSize: '0.75rem',
+        padding: '0.5rem',
+        borderTop: `1px solid ${colors.brand}20`,
+        borderBottom: `1px solid ${colors.brand}20`
+      }}>
+        <span style={{ color: colors.accent }}>💡</span> Use <span style={{ color: colors.accent, fontWeight: 'bold' }}>↑↓</span> arrows for history • <span style={{ color: colors.accent, fontWeight: 'bold' }}>Tab</span> for autocomplete • <span style={{ color: colors.accent, fontWeight: 'bold' }}>clear</span> to reset
       </div>
     </div>
   );
@@ -280,12 +398,12 @@ const CLIPage = () => {
         { 
           type: 'output', 
           content: (
-            <div className="text-red-400">
+            <div style={{ color: colors.accent }}>
               <div className="flex items-center gap-2">
                 <span>❌</span>
-                <span>Command not found: <span className="font-mono">{command}</span></span>
+                <span>Command not found: <span style={{ fontFamily: 'monospace' }}>{command}</span></span>
               </div>
-              <div className="text-gray-500 text-sm mt-1 ml-6">
+              <div style={{ color: colors.neutralWeak, fontSize: '0.875rem', marginTop: '0.25rem', marginLeft: '1.5rem' }}>
                 Type 'help' for available commands
               </div>
             </div>
@@ -339,90 +457,83 @@ const CLIPage = () => {
   };
 
   return (
-    <Column fillWidth paddingY="0" style={{ minHeight: '100vh', backgroundColor: '#0a0e14' }}>
-      <div 
-        className="min-h-screen text-green-400 font-mono p-4"
-        onClick={handleTerminalClick}
-        style={{
-          background: 'linear-gradient(135deg, #0a0e14 0%, #111827 100%)',
-        }}
-      >
+    <div 
+      className="font-mono"
+      onClick={handleTerminalClick}
+      style={{
+        color: colors.neutral,
+        backgroundColor: colors.background,
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100vw',
+        height: '100vh',
+        margin: 0,
+        padding: 0,
+        position: 'fixed',
+        top: 0,
+        left: 0,
+      }}
+    >
+        {/* Terminal Content Area */}
         <div 
           ref={terminalRef}
-          className="max-w-5xl mx-auto rounded-lg shadow-2xl overflow-hidden"
+          className="flex-1 overflow-y-auto cli-terminal"
           style={{ 
-            boxShadow: '0 0 40px rgba(34, 211, 238, 0.4), 0 0 80px rgba(34, 211, 238, 0.2)',
-            minHeight: '85vh',
-            maxHeight: '90vh',
-            overflowY: 'auto',
-            background: 'rgba(0, 0, 0, 0.6)',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(34, 211, 238, 0.3)',
+            padding: '2rem',
+            backgroundColor: colors.background,
+            scrollbarWidth: 'thin',
+            scrollbarColor: `${colors.neutralWeak} transparent`,
           }}
         >
-          {/* Terminal Header */}
-          <div className="px-4 py-3 flex items-center gap-2" style={{
-            background: 'linear-gradient(90deg, rgba(17, 24, 39, 0.95) 0%, rgba(31, 41, 55, 0.95) 100%)',
-            borderBottom: '1px solid rgba(34, 211, 238, 0.3)',
-          }}>
-            <div className="flex gap-2">
-              <div className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 transition-colors cursor-pointer"></div>
-              <div className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 transition-colors cursor-pointer"></div>
-              <div className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-400 transition-colors cursor-pointer"></div>
+          {history.map((item, index) => (
+            <div key={index} className="mb-2">
+              {item.type === 'input' ? (
+                <div className="flex gap-2 items-center">
+                  <span style={{ color: colors.accent }}>{person.firstName.toLowerCase()}@portfolio:~$</span>
+                  <span style={{ color: colors.neutral }}>{item.content}</span>
+                </div>
+              ) : (
+                <div style={{ color: colors.neutral, marginLeft: '0' }}>{item.content}</div>
+              )}
             </div>
-            <div className="text-gray-400 text-sm ml-4 flex items-center gap-2">
-              <span className="text-cyan-400">◆</span>
-              <span>{person.firstName.toLowerCase()}@portfolio:~$</span>
-            </div>
-          </div>
-
-          {/* Terminal Content */}
-          <div className="p-6 space-y-4">
-            {history.map((item, index) => (
-              <div key={index}>
-                {item.type === 'input' ? (
-                  <div className="flex gap-2 items-center">
-                    <span className="text-green-400 flex items-center gap-2">
-                      <span className="text-cyan-400">◆</span>
-                      guest@portfolio:~$
-                    </span>
-                    <span className="text-white">{item.content}</span>
-                  </div>
-                ) : (
-                  <div className="text-gray-300 ml-6 my-3">{item.content}</div>
-                )}
-              </div>
-            ))}
-
-            {/* Input Line */}
-            <div className="flex gap-2 items-center">
-              <span className="text-green-400 flex items-center gap-2">
-                <span className="text-cyan-400 animate-pulse">◆</span>
-                guest@portfolio:~$
-              </span>
-              <input
-                ref={inputRef}
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                className="flex-1 bg-transparent outline-none text-white caret-green-400"
-                autoFocus
-                spellCheck={false}
-                style={{
-                  textShadow: '0 0 5px rgba(74, 222, 128, 0.5)',
-                }}
-              />
-            </div>
-          </div>
+          ))}
         </div>
 
-        {/* Help Text */}
-        <div className="max-w-5xl mx-auto mt-4 text-center text-gray-600 text-sm space-y-1">
-          <div>Press <kbd className="px-2 py-1 bg-gray-800 rounded text-cyan-400">Tab</kbd> for autocomplete • <kbd className="px-2 py-1 bg-gray-800 rounded text-cyan-400">↑↓</kbd> for history • <kbd className="px-2 py-1 bg-gray-800 rounded text-cyan-400">Ctrl+L</kbd> to clear</div>
+        {/* Input Area with Border */}
+        <div 
+          style={{
+            borderTop: `1px solid ${colors.brand}`,
+            padding: '1rem 2rem',
+            backgroundColor: colors.background,
+          }}
+        >
+          <div className="flex gap-2 items-center" style={{ marginBottom: '0.5rem' }}>
+            <span style={{ color: colors.accent }}>{person.firstName.toLowerCase()}@portfolio:~$</span>
+            <input
+              ref={inputRef}
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              style={{
+                flex: 1,
+                backgroundColor: 'transparent',
+                outline: 'none',
+                color: colors.neutral,
+                fontFamily: 'monospace',
+                caretColor: colors.accent,
+                border: 'none',
+                fontSize: '1rem',
+              }}
+              autoFocus
+              spellCheck={false}
+            />
+          </div>
+          <div style={{ color: colors.neutralWeak, fontSize: '0.875rem' }}>
+            Type 'help' to list available commands
+          </div>
         </div>
-      </div>
-    </Column>
+    </div>
   );
 };
 

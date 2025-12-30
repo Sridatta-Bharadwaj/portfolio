@@ -9,3 +9,4 @@ export { ScrollToHash } from "@/components/ScrollToHash";
 export { ThemeToggle } from "@/components/ThemeToggle";
 export { CustomMDX } from "@/components/mdx";
 export { GitHubCalendar } from "@/components/GitHubCalendar";
+export { LayoutContent } from "@/components/LayoutContent";
