@@ -1,4 +1,4 @@
-import { About, Blog, Gallery, Home, Newsletter, Person, Social, Work } from "@/types";
+import { About, Blog, Gallery, Home, Newsletter, Person, Social, Work, Certifications } from "@/types";
 import { Line, Row, Text } from "@once-ui-system/core";
 
 const person: Person = {
@@ -247,4 +247,55 @@ const work: Work = {
 };
 
 
-export { person, social, newsletter, home, about, work };
+const certifications: Certifications = {
+  path: "/certifications",
+  label: "Certifications",
+  title: `Certifications – ${person.name}`,
+  description: `Professional certifications and credentials earned by ${person.name}`,
+  certifications: [
+    {
+      title: "AWS Certified Cloud Practitioner",
+      issuer: "Amazon Web Services",
+      issueDate: "2024-12",
+      credentialId: "CERT-123456",
+      link: "https://aws.amazon.com",
+      description: <>Cloud computing fundamentals and AWS services</>,
+      image: "/images/certs/aws-badge.png",
+    },
+    {
+      title: "Google Cloud Associate Cloud Engineer",
+      issuer: "Google Cloud",
+      issueDate: "2024-11",
+      credentialId: "CERT-234567",
+      link: "https://cloud.google.com",
+      description: <>Google Cloud infrastructure and deployment</>,
+      image: "/images/certs/gcp-badge.png",
+    },
+    {
+      title: "Azure Fundamentals",
+      issuer: "Microsoft",
+      issueDate: "2024-10",
+      credentialId: "CERT-345678",
+      link: "https://microsoft.com",
+      description: <>Microsoft Azure cloud platform basics</>,
+      image: "/images/certs/azure-badge.png",
+    },
+    {
+      title: "Full Stack Web Development",
+      issuer: "Coursera",
+      issueDate: "2024-09",
+      credentialId: "CERT-456789",
+      description: <>Frontend and backend web development technologies</>,
+    },
+    {
+      title: "React Advanced Patterns",
+      issuer: "Frontend Masters",
+      issueDate: "2024-08",
+      credentialId: "CERT-567890",
+      description: <>Advanced React patterns and best practices</>,
+    },
+  ],
+};
+
+
+export { person, social, newsletter, home, about, work, certifications };

@@ -12,6 +12,7 @@ import {
   HiOutlineDocument,
   HiOutlineGlobeAsiaAustralia,
   HiOutlineRocketLaunch,
+  HiAcademicCap,
 } from "react-icons/hi2";
 
 import {
@@ -45,6 +46,7 @@ export const iconLibrary: Record<string, IconType> = {
   home: PiHouseDuotone,
   gallery: PiImageDuotone,
   terminal: PiTerminalDuotone,
+  award: HiAcademicCap,
   discord: FaDiscord,
   eye: HiOutlineEye,
   eyeOff: HiOutlineEyeSlash,

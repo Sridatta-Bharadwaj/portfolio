@@ -224,6 +224,36 @@ export interface Blog extends BasePageConfig {}
 export interface Work extends BasePageConfig {}
 
 /**
+ * Certification configuration.
+ * @description Configuration for displaying individual certifications.
+ */
+export interface Certification {
+  /** Title of the certification */
+  title: string;
+  /** Issuing organization */
+  issuer: string;
+  /** Date the certification was issued */
+  issueDate: string;
+  /** Credential ID or reference */
+  credentialId?: string;
+  /** Link to the certification */
+  link?: string;
+  /** Description of the certification */
+  description?: React.ReactNode;
+  /** Image/badge for the certification */
+  image?: string;
+}
+
+/**
+ * Certifications page configuration.
+ * @description Configuration for the Certifications page.
+ */
+export interface Certifications extends BasePageConfig {
+  /** List of certifications */
+  certifications: Certification[];
+}
+
+/**
  * Gallery page configuration.
  * @description Configuration for the Gallery page, including metadata, navigation label, and image list.
  */

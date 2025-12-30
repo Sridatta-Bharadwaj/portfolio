@@ -14,9 +14,9 @@ import {
   Card,
   Tag,
 } from "@once-ui-system/core";
-import { home, about, person, baseURL, routes } from "@/resources";
+import { home, about, person, baseURL, routes, certifications } from "@/resources";
 import { Projects } from "@/components/work/Projects";
-//import { CertificationCard } from "@/components/certifications/CertificationCard";
+import { CertificationCard } from "@/components/certifications/CertificationCard";
 import { GitHubCalendar } from "@/components/GitHubCalendar";
 
 export async function generateMetadata() {
@@ -30,11 +30,12 @@ export async function generateMetadata() {
 }
 
 export default function Home() {
-  // Get latest 3 certifications (you'll need to sort by date)
-  const latestCertifications = [
-    // This will be populated from your certifications data
-    // For now, showing structure
-  ];
+  // Get latest 3 certifications (sorted by date)
+  const latestCertifications = [...certifications.certifications]
+    .sort(
+      (a, b) => new Date(b.issueDate).getTime() - new Date(a.issueDate).getTime()
+    )
+    .slice(0, 3);
 
   return (
     <Column maxWidth="m" gap="xl" paddingY="12" horizontal="center">
@@ -191,7 +192,7 @@ export default function Home() {
               Latest Certifications
             </Heading>
             <Button
-              href="/certifications"
+              href={certifications.path}
               variant="tertiary"
               size="s"
               suffixIcon="arrowRight"
@@ -200,16 +201,20 @@ export default function Home() {
             </Button>
           </Row>
           <Grid columns="3" gap="16" fillWidth>
-            {/* This will render your latest 3 certifications */}
-            {/* <CertificationCard /> components will go here */}
-            <Card padding="l" radius="m" border="neutral-alpha-weak" background="surface">
-              <Column gap="12">
-                <Text variant="heading-strong-m">Coming Soon</Text>
-                <Text variant="body-default-s" onBackground="neutral-weak">
-                  Your certifications will be displayed here
-                </Text>
-              </Column>
-            </Card>
+            {latestCertifications.length > 0 ? (
+              latestCertifications.map((cert, index) => (
+                <CertificationCard key={index} cert={cert} />
+              ))
+            ) : (
+              <Card padding="l" radius="m" border="neutral-alpha-weak" background="surface">
+                <Column gap="12">
+                  <Text variant="heading-strong-m">Coming Soon</Text>
+                  <Text variant="body-default-s" onBackground="neutral-weak">
+                    Your certifications will be displayed here
+                  </Text>
+                </Column>
+              </Card>
+            )}
           </Grid>
         </Column>
       </RevealFx>

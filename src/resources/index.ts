@@ -6,6 +6,7 @@ export {
   home,
   about,
   work,
+  certifications,
 } from "./content";
 
 export {
