@@ -151,7 +151,7 @@ export default function Home() {
           <Heading as="h2" variant="heading-strong-xl" align="center">
             Technical Skills
           </Heading>
-          <Grid columns="3" mobileColumns="1" gap="16" fillWidth>
+          <Grid columns="3" gap="16" fillWidth>
             {about.technical.skills.slice(0, 3).map((skill, index) => (
               <Card
                 key={index}
@@ -199,7 +199,7 @@ export default function Home() {
               View All
             </Button>
           </Row>
-          <Grid columns="3" mobileColumns="1" gap="16" fillWidth>
+          <Grid columns="3" gap="16" fillWidth>
             {/* This will render your latest 3 certifications */}
             {/* <CertificationCard /> components will go here */}
             <Card padding="l" radius="m" border="neutral-alpha-weak" background="surface">
