@@ -449,7 +449,7 @@ const CLIPage = () => {
           <div key={index} className="mb-2">
             {item.type === 'input' ? (
               <div className="flex gap-2 items-center">
-                <span style={{ color: colors.accent }}>{person.firstName.toLowerCase()}@portfolio:~$</span>
+                <span style={{ color: colors.accent }}>{`${person.firstName.toLowerCase()}@portfolio`}</span>
                 <span style={{ color: colors.neutral }}>{item.content}</span>
               </div>
             ) : (
@@ -469,7 +469,7 @@ const CLIPage = () => {
       >
         <div className={isMobile ? 'flex items-center' : 'flex gap-2 items-center'} style={{ marginBottom: '0.5rem', gap: isMobile ? '0.25rem' : undefined }}>
           <span style={{ color: colors.accent, whiteSpace: 'nowrap', flexShrink: 0 }}>
-            {isMobile ? '$' : `${person.firstName.toLowerCase()}@portfolio:~$`}
+            {`${person.firstName.toLowerCase()}@portfolio:~$`}
           </span>
           <input
             ref={inputRef}
