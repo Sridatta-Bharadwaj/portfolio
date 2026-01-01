@@ -23,6 +23,12 @@ import { Projects } from "@/components/work/Projects";
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const posts = getPosts(["src", "app", "work", "projects"]);
+  
+  // Return empty array if no projects - route will handle 404
+  if (posts.length === 0) {
+    return [];
+  }
+  
   return posts.map((post) => ({
     slug: post.slug,
   }));

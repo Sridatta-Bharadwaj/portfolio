@@ -24,20 +24,24 @@ export function Projects({ range, exclude }: ProjectsProps) {
     : sortedProjects;
 
   return (
-    <Grid columns="2" gap="16" fillWidth s={{ columns: 1, gap: "m" }}>
-      {displayedProjects.map((post, index) => (
-        <ProjectCard
-          priority={index < 2}
-          key={post.slug}
-          href={`/work/${post.slug}`}
-          images={post.metadata.images}
-          title={post.metadata.title}
-          description={post.metadata.summary}
-          content={post.content}
-          avatars={post.metadata.team?.map((member) => ({ src: member.avatar })) || []}
-          link={post.metadata.link || ""}
-        />
-      ))}
-    </Grid>
+    <>
+      {displayedProjects.length > 0 ? (
+        <Grid columns="2" gap="16" fillWidth s={{ columns: 1, gap: "m" }}>
+          {displayedProjects.map((post, index) => (
+            <ProjectCard
+              priority={index < 2}
+              key={post.slug}
+              href={`/work/${post.slug}`}
+              images={post.metadata.images}
+              title={post.metadata.title}
+              description={post.metadata.summary}
+              content={post.content}
+              avatars={post.metadata.team?.map((member) => ({ src: member.avatar })) || []}
+              link={post.metadata.link || ""}
+            />
+          ))}
+        </Grid>
+      ) : null}
+    </>
   );
 }
