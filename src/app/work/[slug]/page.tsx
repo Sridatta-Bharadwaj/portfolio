@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getPosts } from "@/utils/utils";
+import { getPosts } from "@/utils/posts.server";
 import {
   Meta,
   Schema,

@@ -1,4 +1,4 @@
-import { getPosts } from "@/utils/utils";
+import { getPosts } from "@/utils/posts.server";
 import { baseURL, routes as routesConfig } from "@/resources";
 
 export default async function sitemap() {

@@ -55,11 +55,12 @@
 
 /* Mobile responsiveness fixes */
 @media (max-width: 768px) {
+
   /* Make GitHub calendar image larger on mobile */
   .github-calendar-container {
     padding: 0.5rem !important;
   }
-  
+
   .github-calendar-container img {
     min-height: 150px !important;
     object-fit: contain !important;

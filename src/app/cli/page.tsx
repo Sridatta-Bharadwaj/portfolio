@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Column } from "@once-ui-system/core";
 import { person, social, work, studies, skills, certifications } from "@/resources";
-import { getPosts } from '@/utils/utils';
 
 const CLIPage = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -40,23 +39,18 @@ const CLIPage = () => {
       .project-card:hover { background:rgba(255,255,255,0.06); cursor:pointer; }
     `;
     document.head.appendChild(style);
-    
-    // Load projects and certifications
-    try {
-      const posts = getPosts(['src', 'app', 'work', 'projects']);
-      setProjectsData(posts.slice(0, 3));
-    } catch (e) {
-      console.log('No projects found');
-    }
+
+    // Load certifications
+    // Note: Projects data would need to be fetched from an API route in production
     setCertsData(certifications.certifications?.slice(0, 3) || []);
-    
+
     // Detect mobile
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
     };
     handleResize();
     window.addEventListener('resize', handleResize);
-    
+
     return () => {
       document.head.removeChild(style);
       window.removeEventListener('resize', handleResize);
