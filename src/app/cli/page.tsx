@@ -26,6 +26,38 @@ const CLIPage = () => {
         background: var(--neutral-on-background);
         cursor: pointer;
       }
+      /* Modern terminal container + caret */
+      @keyframes blinkCaret {
+        0%, 50% { opacity: 1 }
+        50.1%, 100% { opacity: 0 }
+      }
+      .terminal-wrap {
+        max-width: 980px;
+        margin: 48px auto;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(2,6,23,0.45);
+        overflow: hidden;
+        backdrop-filter: blur(6px) saturate(120%);
+        border: 1px solid var(--neutral-alpha-weak);
+      }
+      .terminal-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        background: linear-gradient(180deg, var(--background-surface)cc, transparent);
+        border-bottom: 1px solid var(--neutral-alpha-weak);
+      }
+      .header-dots { display:flex; gap:8px; }
+      .header-dot { width:12px; height:12px; border-radius:999px; }
+      .dot-close { background: linear-gradient(90deg, #ff7b7b, #ff5252); }
+      .dot-min { background: linear-gradient(90deg, #ffd27f, #ffb84d); }
+      .dot-max { background: linear-gradient(90deg, #7bff9a, #2dd36f); }
+      .terminal-body { padding: 20px; background: var(--page-background); }
+      .input-pill { display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:10px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid var(--neutral-alpha-weak); }
+      .cli-suggestion { padding:6px 10px; border-radius:8px; cursor:pointer; }
+      .cli-suggestion:hover { transform:translateX(6px); }
+      .caret { width:8px; height:18px; background: var(--accent-on-background); display:inline-block; margin-left:6px; animation: blinkCaret 1s infinite; }
     `;
     document.head.appendChild(style);
     
@@ -41,6 +73,8 @@ const CLIPage = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  const [suggestions, setSuggestions] = useState<string[]>([]);
 
   // Color palette from Once-UI design system
   const colors = {
@@ -400,11 +434,10 @@ const CLIPage = () => {
       }
     } else if (e.key === 'Tab') {
       e.preventDefault();
-      const matches = Object.keys(commands).filter(cmd =>
-        cmd.startsWith(input.toLowerCase())
-      );
-      if (matches.length === 1) {
+      const matches = Object.keys(commands).filter(cmd => cmd.startsWith(input.toLowerCase()));
+      if (matches.length > 0) {
         setInput(matches[0]);
+        setSuggestions([]);
       }
     } else if (e.ctrlKey && e.key === 'l') {
       e.preventDefault();
@@ -417,83 +450,68 @@ const CLIPage = () => {
   };
 
   return (
-    <div
-      className="font-mono"
-      onClick={handleTerminalClick}
-      style={{
-        color: colors.neutral,
-        backgroundColor: colors.background,
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100vw',
-        height: '100vh',
-        margin: 0,
-        padding: 0,
-        position: 'fixed',
-        top: 0,
-        left: 0,
-      }}
-    >
-      {/* Terminal Content Area */}
-      <div
-        ref={terminalRef}
-        className="flex-1 overflow-y-auto cli-terminal"
-        style={{
-          padding: isMobile ? '1rem' : '2rem',
-          backgroundColor: colors.background,
-          scrollbarWidth: 'thin',
-          scrollbarColor: `${colors.neutralWeak} transparent`,
-        }}
-      >
-        {history.map((item, index) => (
-          <div key={index} className="mb-2">
-            {item.type === 'input' ? (
-              <div className="flex gap-2 items-center">
-                <span style={{ color: colors.accent }}>{`${person.firstName.toLowerCase()}@portfolio`}</span>
-                <span style={{ color: colors.neutral }}>{item.content}</span>
-              </div>
-            ) : (
-              <div style={{ color: colors.neutral, marginLeft: '0' }}>{item.content}</div>
-            )}
+    <div className="font-mono" style={{ backgroundColor: colors.background, minHeight: '100vh', padding: isMobile ? '12px' : '24px' }} onClick={handleTerminalClick}>
+      <div className="terminal-wrap" role="region" aria-label="CLI portfolio">
+        <div className="terminal-header">
+          <div className="header-dots">
+            <div className="header-dot dot-close" title="Close" />
+            <div className="header-dot dot-min" title="Minimise" />
+            <div className="header-dot dot-max" title="Maximise" />
           </div>
-        ))}
-      </div>
-
-      {/* Input Area with Border */}
-      <div
-        style={{
-          borderTop: `1px solid ${colors.brand}`,
-          padding: isMobile ? '0.75rem 1rem' : '1rem 2rem',
-          backgroundColor: colors.background,
-        }}
-      >
-        <div className={isMobile ? 'flex items-center' : 'flex gap-2 items-center'} style={{ marginBottom: '0.5rem', gap: isMobile ? '0.25rem' : undefined }}>
-          <span style={{ color: colors.accent, whiteSpace: 'nowrap', flexShrink: 0 }}>
-            {`${person.firstName.toLowerCase()}@portfolio:~$`}
-          </span>
-          <input
-            ref={inputRef}
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            style={{
-              flex: 1,
-              minWidth: 0,
-              backgroundColor: 'transparent',
-              outline: 'none',
-              color: colors.neutral,
-              fontFamily: 'monospace',
-              caretColor: colors.accent,
-              border: 'none',
-              fontSize: '1rem',
-            }}
-            autoFocus
-            spellCheck={false}
-          />
+          <div style={{ color: colors.neutralWeak, fontSize: '0.9rem', marginLeft: 8 }}>{person.firstName}'s CLI</div>
+          <div style={{ marginLeft: 'auto', color: colors.neutralWeak, fontSize: '0.85rem' }}>{new Date().toLocaleDateString()}</div>
         </div>
-        <div style={{ color: colors.neutralWeak, fontSize: '0.875rem' }}>
-          Type 'help' to list available commands
+
+        <div className="terminal-body">
+          <div ref={terminalRef} className="cli-terminal" style={{ maxHeight: '64vh', overflowY: 'auto', paddingRight: 8 }}>
+            {history.map((item, index) => (
+              <div key={index} style={{ marginBottom: 12 }}>
+                {item.type === 'input' ? (
+                  <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+                    <div style={{ color: colors.accent, fontFamily: 'monospace' }}>{`${person.firstName.toLowerCase()}@portfolio:~$`}</div>
+                    <div style={{ color: colors.neutral, fontFamily: 'monospace' }}>{item.content}</div>
+                  </div>
+                ) : (
+                  <div style={{ color: colors.neutral }}>{item.content}</div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div style={{ marginTop: 12 }}>
+            <div className="input-pill">
+              <div style={{ color: colors.accent, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>{`${person.firstName.toLowerCase()}@portfolio:~$`}</div>
+              <input
+                ref={inputRef}
+                type="text"
+                value={input}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  setInput(v);
+                  if (!v) { setSuggestions([]); return; }
+                  const matches = Object.keys(commands).filter(cmd => cmd.startsWith(v.toLowerCase())).slice(0,6);
+                  setSuggestions(matches);
+                }}
+                onKeyDown={handleKeyDown}
+                style={{ flex: 1, minWidth: 0, background: 'transparent', outline: 'none', color: colors.neutral, fontFamily: 'monospace', caretColor: colors.accent, border: 'none', fontSize: '1rem' }}
+                autoFocus
+                spellCheck={false}
+              />
+              <div style={{ width: 24 }} aria-hidden>
+                <span className="caret" />
+              </div>
+            </div>
+
+            {suggestions.length > 0 && (
+              <div style={{ display: 'flex', gap: 8, marginTop: 8, flexWrap: 'wrap' }}>
+                {suggestions.map(s => (
+                  <div key={s} className="cli-suggestion" onClick={() => { setInput(s); setSuggestions([]); inputRef.current?.focus(); }} style={{ background: colors.backgroundContent, color: colors.neutral, padding: '6px 10px', borderRadius: 8, border: `1px solid ${colors.border}` }}>{s}</div>
+                ))}
+              </div>
+            )}
+
+            <div style={{ color: colors.neutralWeak, fontSize: '0.85rem', marginTop: 10 }}>Type 'help' to list commands • Press <span style={{ color: colors.accent }}>Tab</span> to autocomplete</div>
+          </div>
         </div>
       </div>
     </div>
