@@ -5,6 +5,8 @@ import { Column } from "@once-ui-system/core";
 import { person, social, work, studies, skills } from "@/resources";
 
 const CLIPage = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
   // Add scrollbar styles dynamically
   useEffect(() => {
     const style = document.createElement('style');
@@ -26,8 +28,17 @@ const CLIPage = () => {
       }
     `;
     document.head.appendChild(style);
+    
+    // Detect mobile
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    
     return () => {
       document.head.removeChild(style);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
@@ -428,7 +439,7 @@ const CLIPage = () => {
         ref={terminalRef}
         className="flex-1 overflow-y-auto cli-terminal"
         style={{
-          padding: '2rem',
+          padding: isMobile ? '1rem' : '2rem',
           backgroundColor: colors.background,
           scrollbarWidth: 'thin',
           scrollbarColor: `${colors.neutralWeak} transparent`,
@@ -452,12 +463,14 @@ const CLIPage = () => {
       <div
         style={{
           borderTop: `1px solid ${colors.brand}`,
-          padding: '1rem 2rem',
+          padding: isMobile ? '0.75rem 1rem' : '1rem 2rem',
           backgroundColor: colors.background,
         }}
       >
-        <div className="flex gap-2 items-center" style={{ marginBottom: '0.5rem' }}>
-          <span style={{ color: colors.accent }}>{person.firstName.toLowerCase()}@portfolio:~$</span>
+        <div className={isMobile ? 'flex items-center' : 'flex gap-2 items-center'} style={{ marginBottom: '0.5rem', gap: isMobile ? '0.25rem' : undefined }}>
+          <span style={{ color: colors.accent, whiteSpace: 'nowrap', flexShrink: 0 }}>
+            {isMobile ? '$' : `${person.firstName.toLowerCase()}@portfolio:~$`}
+          </span>
           <input
             ref={inputRef}
             type="text"
@@ -466,6 +479,7 @@ const CLIPage = () => {
             onKeyDown={handleKeyDown}
             style={{
               flex: 1,
+              minWidth: 0,
               backgroundColor: 'transparent',
               outline: 'none',
               color: colors.neutral,
