@@ -1,4 +1,4 @@
-import {
+  import {
   Heading,
   Text,
   Button,
@@ -14,8 +14,7 @@ import {
   Card,
   Tag,
 } from "@once-ui-system/core";
-import { home, about, person, baseURL, routes, certifications } from "@/resources";
-import { Projects } from "@/components/work/Projects";
+import { home, person, baseURL, routes, certifications, skills } from "@/resources";
 import { CertificationCard } from "@/components/certifications/CertificationCard";
 import { GitHubCalendar } from "@/components/GitHubCalendar";
 
@@ -48,7 +47,7 @@ export default function Home() {
         image={`/api/og/generate?title=${encodeURIComponent(home.title)}`}
         author={{
           name: person.name,
-          url: `${baseURL}${about.path}`,
+          url: `${baseURL}/`,
           image: `${baseURL}${person.avatar}`,
         }}
       />
@@ -101,7 +100,7 @@ export default function Home() {
               align="center"
               style={{ maxWidth: '600px' }}
             >
-              {about.intro.description}
+              Turning ideas into clean digital experiences through code and design.
             </Text>
           </RevealFx>
 
@@ -109,14 +108,13 @@ export default function Home() {
           <RevealFx paddingTop="12" delay={0.4} horizontal="center">
             <Row gap="12" wrap horizontal="center">
               <Button
-                id="about"
                 data-border="rounded"
-                href={about.path}
+                href="/work"
                 variant="primary"
                 size="m"
                 arrowIcon
               >
-                About Me
+                View Projects
               </Button>
               <Button
                 data-border="rounded"
@@ -152,8 +150,8 @@ export default function Home() {
           <Heading as="h2" variant="heading-strong-xl" align="center">
             Technical Skills
           </Heading>
-          <Grid columns="3" gap="16" fillWidth>
-            {about.technical.skills.slice(0, 3).map((skill, index) => (
+          <Grid columns="3" gap="16" fillWidth s={{ columns: 1, gap: "m" }}>
+            {skills.slice(0, 3).map((skill: any, index: number) => (
               <Card
                 key={index}
                 padding="l"
@@ -170,7 +168,7 @@ export default function Home() {
                   )}
                   {skill.tags && skill.tags.length > 0 && (
                     <Row wrap gap="8" paddingTop="8">
-                      {skill.tags.map((tag, tagIndex) => (
+                      {skill.tags.map((tag: any, tagIndex: number) => (
                         <Tag key={tagIndex} size="s">
                           {tag.name}
                         </Tag>
@@ -181,6 +179,37 @@ export default function Home() {
               </Card>
             ))}
           </Grid>
+        </Column>
+      </RevealFx>
+
+      {/* Latest Projects */}
+      <RevealFx translateY="16" delay={0.65}>
+        <Column fillWidth gap="m" horizontal="center">
+          <Row fillWidth horizontal="between" vertical="center">
+            <Heading as="h2" variant="heading-strong-xl">
+              Latest Projects
+            </Heading>
+          </Row>
+          <Column
+            fillWidth
+            horizontal="center"
+            vertical="center"
+            gap="m"
+            padding="xl"
+            style={{ minHeight: "300px" }}
+          >
+            <Heading variant="heading-strong-l" align="center">
+              Coming Soon
+            </Heading>
+            <Text
+              variant="body-default-m"
+              onBackground="neutral-weak"
+              align="center"
+              style={{ maxWidth: "400px" }}
+            >
+              I'm working on some amazing projects. Check back soon to see what I've been building!
+            </Text>
+          </Column>
         </Column>
       </RevealFx>
 
@@ -200,7 +229,7 @@ export default function Home() {
               View All
             </Button>
           </Row>
-          <Grid columns="3" gap="16" fillWidth>
+          <Grid columns="3" gap="16" fillWidth s={{ columns: 1, gap: "m" }}>
             {latestCertifications.length > 0 ? (
               latestCertifications.map((cert, index) => (
                 <CertificationCard key={index} cert={cert} />

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Column } from "@once-ui-system/core";
-import { person, social, about, work } from "@/resources";
+import { person, social, work, studies, skills } from "@/resources";
 
 const CLIPage = () => {
   // Add scrollbar styles dynamically
@@ -45,7 +45,7 @@ const CLIPage = () => {
     border: 'var(--neutral-alpha-weak)',
   };
   const [input, setInput] = useState('');
-  const [history, setHistory] = useState<Array<{type: string, content: any}>>([]);
+  const [history, setHistory] = useState<Array<{ type: string, content: any }>>([]);
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -70,50 +70,13 @@ const CLIPage = () => {
         );
       }
     },
-    about: {
-      description: 'Learn about me',
-      action: () => (
-        <div className="space-y-3">
-          <div style={{ color: colors.brand, fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>
-            ╭─ About {person.name}
-          </div>
-          <div style={{ color: colors.neutral, marginLeft: '1rem' }} className="space-y-2">
-            <p className="flex items-center gap-2">
-              <span style={{ color: colors.accent }}>▸</span>
-              <span style={{ color: colors.neutralWeak }}>Name:</span> 
-              <span>{person.name}</span>
-            </p>
-            <p className="flex items-center gap-2">
-              <span style={{ color: colors.accent }}>▸</span>
-              <span style={{ color: colors.neutralWeak }}>Role:</span> 
-              <span>{person.role}</span>
-            </p>
-            <p className="flex items-center gap-2">
-              <span style={{ color: colors.accent }}>▸</span>
-              <span style={{ color: colors.neutralWeak }}>Location:</span> 
-              <span>{person.location}</span>
-            </p>
-            {person.languages && person.languages.length > 0 && (
-              <p className="flex items-center gap-2">
-                <span style={{ color: colors.accent }}>▸</span>
-                <span style={{ color: colors.neutralWeak }}>Languages:</span> 
-                <span>{person.languages.join(', ')}</span>
-              </p>
-            )}
-            <div style={{ color: colors.neutralWeak, marginTop: '1rem', borderLeft: `2px solid ${colors.brand}`, paddingLeft: '1rem', lineHeight: '1.6' }}>
-              {about.intro.description}
-            </div>
-          </div>
-        </div>
-      )
-    },
     skills: {
       description: 'View technical skills',
       action: () => (
         <div className="space-y-3">
           <div style={{ color: colors.brand, fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>╭─ Technical Skills</div>
           <div style={{ marginLeft: '1rem' }} className="space-y-3">
-            {about.technical.skills.map((skill, index) => (
+            {skills.map((skill: any, index: number) => (
               <div key={index} className="space-y-2" style={{ borderLeft: `2px solid ${colors.neutralAlpha}`, paddingLeft: '1rem' }}>
                 <div style={{ color: colors.accent, fontWeight: 'semibold' }}>{skill.title}</div>
                 {skill.description && (
@@ -121,7 +84,7 @@ const CLIPage = () => {
                 )}
                 {skill.tags && skill.tags.length > 0 && (
                   <div className="flex gap-2 flex-wrap">
-                    {skill.tags.map((tag, i) => (
+                    {skill.tags.map((tag: any, i: number) => (
                       <span key={i} style={{ fontSize: '0.75rem', backgroundColor: colors.backgroundContent, color: colors.neutral, padding: '0.25rem 0.5rem', borderRadius: '0.25rem' }}>
                         {tag.name}
                       </span>
@@ -140,23 +103,9 @@ const CLIPage = () => {
         <div className="space-y-3">
           <div style={{ color: colors.brand, fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>╭─ Work Experience</div>
           <div style={{ marginLeft: '1rem' }} className="space-y-4">
-            {about.work.experiences.map((exp, index) => (
-              <div key={index} style={{ borderLeft: `2px solid ${colors.accent}`, paddingLeft: '1rem' }} className="space-y-2">
-                <div className="flex justify-between items-start">
-                  <div style={{ color: colors.accent, fontWeight: 'semibold', fontSize: '1.125rem' }}>{exp.company}</div>
-                  <div style={{ color: colors.neutralWeak, fontSize: '0.875rem' }}>{exp.timeframe}</div>
-                </div>
-                <div style={{ color: colors.brand, fontSize: '0.875rem' }}>{exp.role}</div>
-                <div className="space-y-1 mt-2">
-                  {exp.achievements.map((achievement, i) => (
-                    <div key={i} style={{ color: colors.neutralWeak, fontSize: '0.875rem' }} className="flex items-start gap-2">
-                      <span style={{ color: colors.accent }}>•</span>
-                      <span>{achievement}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
+            <div style={{ color: colors.neutralWeak, fontSize: '0.875rem', padding: '1rem', backgroundColor: colors.backgroundContent, borderRadius: '0.5rem' }}>
+              Coming soon! Work experience section will be available soon.
+            </div>
           </div>
         </div>
       )
@@ -167,7 +116,7 @@ const CLIPage = () => {
         <div className="space-y-3">
           <div style={{ color: colors.brand, fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>╭─ Education</div>
           <div style={{ marginLeft: '1rem' }} className="space-y-3">
-            {about.studies.institutions.map((inst, index) => (
+            {studies.map((inst: any, index: number) => (
               <div key={index} style={{ borderLeft: `2px solid ${colors.neutralAlpha}`, paddingLeft: '1rem' }}>
                 <div style={{ color: colors.accent, fontWeight: 'semibold' }}>{inst.name}</div>
                 <div style={{ color: colors.neutralWeak, fontSize: '0.875rem', marginTop: '0.25rem' }}>{inst.description}</div>
@@ -287,7 +236,7 @@ const CLIPage = () => {
         }}>
           ▶ {person.firstName}'s Portfolio
         </div>
-        
+
         {/* Subtitle with role */}
         <div style={{
           fontSize: '0.95rem',
@@ -311,7 +260,7 @@ const CLIPage = () => {
         }}>
           <div style={{ color: colors.accent, fontWeight: 'bold' }}>📍</div>
           <div><div style={{ color: colors.neutral, fontWeight: '500', fontSize: '0.9rem' }}>Location</div><div style={{ color: colors.neutralWeak, fontSize: '0.8rem' }}>{person.location}</div></div>
-          
+
           <div style={{ color: colors.accent, fontWeight: 'bold' }}>✦</div>
           <div><div style={{ color: colors.neutral, fontWeight: '500', fontSize: '0.9rem' }}>Role</div><div style={{ color: colors.neutralWeak, fontSize: '0.8rem' }}>{person.role}</div></div>
         </div>
@@ -344,9 +293,9 @@ const CLIPage = () => {
           gap: '0.5rem'
         }}>
           <div><span style={{ color: colors.accent, fontWeight: 'bold' }}>help</span> — List all commands</div>
-          <div><span style={{ color: colors.accent, fontWeight: 'bold' }}>about</span> — About me</div>
           <div><span style={{ color: colors.accent, fontWeight: 'bold' }}>skills</span> — My skills</div>
           <div><span style={{ color: colors.accent, fontWeight: 'bold' }}>work</span> — View portfolio</div>
+          <div><span style={{ color: colors.accent, fontWeight: 'bold' }}>education</span> — Education</div>
         </div>
       </div>
 
@@ -395,8 +344,8 @@ const CLIPage = () => {
     } else {
       setHistory(prev => [
         ...prev,
-        { 
-          type: 'output', 
+        {
+          type: 'output',
           content: (
             <div style={{ color: colors.accent }}>
               <div className="flex items-center gap-2">
@@ -440,7 +389,7 @@ const CLIPage = () => {
       }
     } else if (e.key === 'Tab') {
       e.preventDefault();
-      const matches = Object.keys(commands).filter(cmd => 
+      const matches = Object.keys(commands).filter(cmd =>
         cmd.startsWith(input.toLowerCase())
       );
       if (matches.length === 1) {
@@ -457,7 +406,7 @@ const CLIPage = () => {
   };
 
   return (
-    <div 
+    <div
       className="font-mono"
       onClick={handleTerminalClick}
       style={{
@@ -474,65 +423,65 @@ const CLIPage = () => {
         left: 0,
       }}
     >
-        {/* Terminal Content Area */}
-        <div 
-          ref={terminalRef}
-          className="flex-1 overflow-y-auto cli-terminal"
-          style={{ 
-            padding: '2rem',
-            backgroundColor: colors.background,
-            scrollbarWidth: 'thin',
-            scrollbarColor: `${colors.neutralWeak} transparent`,
-          }}
-        >
-          {history.map((item, index) => (
-            <div key={index} className="mb-2">
-              {item.type === 'input' ? (
-                <div className="flex gap-2 items-center">
-                  <span style={{ color: colors.accent }}>{person.firstName.toLowerCase()}@portfolio:~$</span>
-                  <span style={{ color: colors.neutral }}>{item.content}</span>
-                </div>
-              ) : (
-                <div style={{ color: colors.neutral, marginLeft: '0' }}>{item.content}</div>
-              )}
-            </div>
-          ))}
-        </div>
+      {/* Terminal Content Area */}
+      <div
+        ref={terminalRef}
+        className="flex-1 overflow-y-auto cli-terminal"
+        style={{
+          padding: '2rem',
+          backgroundColor: colors.background,
+          scrollbarWidth: 'thin',
+          scrollbarColor: `${colors.neutralWeak} transparent`,
+        }}
+      >
+        {history.map((item, index) => (
+          <div key={index} className="mb-2">
+            {item.type === 'input' ? (
+              <div className="flex gap-2 items-center">
+                <span style={{ color: colors.accent }}>{person.firstName.toLowerCase()}@portfolio:~$</span>
+                <span style={{ color: colors.neutral }}>{item.content}</span>
+              </div>
+            ) : (
+              <div style={{ color: colors.neutral, marginLeft: '0' }}>{item.content}</div>
+            )}
+          </div>
+        ))}
+      </div>
 
-        {/* Input Area with Border */}
-        <div 
-          style={{
-            borderTop: `1px solid ${colors.brand}`,
-            padding: '1rem 2rem',
-            backgroundColor: colors.background,
-          }}
-        >
-          <div className="flex gap-2 items-center" style={{ marginBottom: '0.5rem' }}>
-            <span style={{ color: colors.accent }}>{person.firstName.toLowerCase()}@portfolio:~$</span>
-            <input
-              ref={inputRef}
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              style={{
-                flex: 1,
-                backgroundColor: 'transparent',
-                outline: 'none',
-                color: colors.neutral,
-                fontFamily: 'monospace',
-                caretColor: colors.accent,
-                border: 'none',
-                fontSize: '1rem',
-              }}
-              autoFocus
-              spellCheck={false}
-            />
-          </div>
-          <div style={{ color: colors.neutralWeak, fontSize: '0.875rem' }}>
-            Type 'help' to list available commands
-          </div>
+      {/* Input Area with Border */}
+      <div
+        style={{
+          borderTop: `1px solid ${colors.brand}`,
+          padding: '1rem 2rem',
+          backgroundColor: colors.background,
+        }}
+      >
+        <div className="flex gap-2 items-center" style={{ marginBottom: '0.5rem' }}>
+          <span style={{ color: colors.accent }}>{person.firstName.toLowerCase()}@portfolio:~$</span>
+          <input
+            ref={inputRef}
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            style={{
+              flex: 1,
+              backgroundColor: 'transparent',
+              outline: 'none',
+              color: colors.neutral,
+              fontFamily: 'monospace',
+              caretColor: colors.accent,
+              border: 'none',
+              fontSize: '1rem',
+            }}
+            autoFocus
+            spellCheck={false}
+          />
         </div>
+        <div style={{ color: colors.neutralWeak, fontSize: '0.875rem' }}>
+          Type 'help' to list available commands
+        </div>
+      </div>
     </div>
   );
 };

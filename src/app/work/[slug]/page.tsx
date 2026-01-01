@@ -15,14 +15,23 @@ import {
   Avatar,
   Line,
 } from "@once-ui-system/core";
-import { baseURL, about, person, work } from "@/resources";
+import { baseURL, person, work } from "@/resources";
 import { formatDate } from "@/utils/formatDate";
 import { ScrollToHash, CustomMDX } from "@/components";
 import { Metadata } from "next";
 import { Projects } from "@/components/work/Projects";
 
+// Disable dynamic params to prevent fallback generation when no static params exist
+export const dynamicParams = false;
+
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const posts = getPosts(["src", "app", "work", "projects"]);
+  
+  // Return empty array if no projects - route will handle 404
+  if (posts.length === 0) {
+    return [];
+  }
+  
   return posts.map((post) => ({
     slug: post.slug,
   }));
@@ -88,7 +97,7 @@ export default async function Project({
         }
         author={{
           name: person.name,
-          url: `${baseURL}${about.path}`,
+          url: `${baseURL}/`,
           image: `${baseURL}${person.avatar}`,
         }}
       />
