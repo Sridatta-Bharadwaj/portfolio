@@ -1,4 +1,4 @@
-import { getPosts } from "@/utils/utils";
+import { getPosts } from "@/utils/posts.server";
 import { Column, Grid } from "@once-ui-system/core";
 import { ProjectCard } from "@/components";
 

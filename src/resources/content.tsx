@@ -2,8 +2,8 @@ import { Blog, Gallery, Home, Newsletter, Person, Social, Work, Certifications }
 import { Line, Row, Text } from "@once-ui-system/core";
 
 const person: Person = {
-  firstName: "Sridatta Bharadwaj",
-  lastName: "Parupudi",
+  firstName: "Sridatta",
+  lastName: "Bharadwaj Parupudi",
   name: `Sridatta Bharadwaj Parupudi`,
   role: "Student",
   avatar: "/images/gallery/avatar3.png",
@@ -135,7 +135,7 @@ const studies = [
 
 const work: Work = {
   path: "/work",
-  label: "projects",
+  label: "Projects",
   title: `Projects – ${person.name}`,
   description: `Design and dev projects by ${person.name}`,
   // Create new project pages by adding a new .mdx file to app/blog/posts

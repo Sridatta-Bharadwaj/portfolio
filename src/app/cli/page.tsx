@@ -2,9 +2,13 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Column } from "@once-ui-system/core";
-import { person, social, work, studies, skills } from "@/resources";
+import { person, social, work, studies, skills, certifications } from "@/resources";
 
 const CLIPage = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  const [projectsData, setProjectsData] = useState<any[]>([]);
+  const [certsData, setCertsData] = useState<any[]>([]);
+
   // Add scrollbar styles dynamically
   useEffect(() => {
     const style = document.createElement('style');
@@ -24,12 +28,36 @@ const CLIPage = () => {
         background: var(--neutral-on-background);
         cursor: pointer;
       }
+      @keyframes blinkCaret {
+        0%, 50% { opacity: 1 }
+        50.1%, 100% { opacity: 0 }
+      }
+      .caret { width:8px; height:18px; background: var(--accent-on-background); display:inline-block; animation: blinkCaret 1s infinite; }
+      .command-card { cursor:pointer; padding:12px 16px; border-radius:8px; background:rgba(255,255,255,0.04); border:1px solid var(--neutral-alpha-weak); transition:all 0.3s; }
+      .command-card:hover { background:rgba(255,255,255,0.08); transform:translateY(-2px); box-shadow:0 8px 16px rgba(0,0,0,0.2); }
+      .project-card { padding:14px; border-radius:8px; background:rgba(255,255,255,0.03); border:1px solid var(--neutral-alpha-weak); }
+      .project-card:hover { background:rgba(255,255,255,0.06); cursor:pointer; }
     `;
     document.head.appendChild(style);
+
+    // Load certifications
+    // Note: Projects data would need to be fetched from an API route in production
+    setCertsData(certifications.certifications?.slice(0, 3) || []);
+
+    // Detect mobile
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
     return () => {
       document.head.removeChild(style);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  const [suggestions, setSuggestions] = useState<string[]>([]);
 
   // Color palette from Once-UI design system
   const colors = {
@@ -56,16 +84,18 @@ const CLIPage = () => {
     help: {
       description: 'Show available commands',
       action: () => {
+        const availableCmds = Object.entries(commands).filter(([cmd]) => cmd !== 'help');
         return (
-          <div className="space-y-2">
+          <div className="space-y-3">
             <div style={{ color: colors.brand, fontWeight: 'bold', marginBottom: '1rem' }}>Available Commands:</div>
-            {Object.entries(commands).map(([cmd, info]) => (
-              <div key={cmd} className="ml-4 flex items-start gap-3 group hover:translate-x-2 transition-transform">
-                <span style={{ color: colors.accent, fontFamily: 'monospace', minWidth: '120px' }}>{cmd}</span>
-                <span style={{ color: colors.neutralWeak }}>→</span>
-                <span style={{ color: colors.neutralWeak }} className="group-hover:opacity-100 transition-opacity">{info.description}</span>
-              </div>
-            ))}
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', gap: '10px' }}>
+              {availableCmds.map(([cmd, info]) => (
+                <div key={cmd} className="command-card" onClick={() => { setInput(cmd); inputRef.current?.focus(); }} style={{ color: colors.neutral }}>
+                  <div style={{ color: colors.accent, fontWeight: 'bold', marginBottom: '4px' }}>{cmd}</div>
+                  <div style={{ color: colors.neutralWeak, fontSize: '0.85rem' }}>{info.description}</div>
+                </div>
+              ))}
+            </div>
           </div>
         );
       }
@@ -161,26 +191,44 @@ const CLIPage = () => {
         return null;
       }
     },
-    work: {
-      description: 'Go to projects page',
-      action: () => {
-        window.location.href = '/work';
-        return <div style={{ color: colors.neutralWeak }}>Redirecting to projects page...</div>;
-      }
+    projects: {
+      description: 'View latest projects',
+      action: () => (
+        <div className="space-y-3">
+          <div style={{ color: colors.brand, fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>╭─ Latest Projects</div>
+          <div style={{ marginLeft: '1rem', display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
+            {projectsData.length > 0 ? projectsData.map((proj: any, idx: number) => (
+              <div key={idx} className="project-card" onClick={() => window.location.href = `/work/${proj.slug}`} style={{ color: colors.neutral }}>
+                <div style={{ color: colors.accent, fontWeight: 'bold', marginBottom: '6px', fontSize: '0.95rem' }}>{proj.metadata.title}</div>
+                <div style={{ color: colors.neutralWeak, fontSize: '0.8rem', marginBottom: '8px', lineHeight: '1.4' }}>{proj.metadata.summary}</div>
+                <div style={{ color: colors.brand, fontSize: '0.75rem', fontWeight: '500' }}>→ View Project</div>
+              </div>
+            )) : (
+              <div style={{ color: colors.neutralWeak }}>No projects found yet.</div>
+            )}
+          </div>
+        </div>
+      )
     },
     certifications: {
-      description: 'View certifications',
-      action: () => {
-        window.location.href = '/certifications';
-        return <div style={{ color: colors.neutralWeak }}>Redirecting to certifications page...</div>;
-      }
-    },
-    home: {
-      description: 'Go to home page',
-      action: () => {
-        window.location.href = '/';
-        return <div style={{ color: colors.neutralWeak }}>Redirecting to home page...</div>;
-      }
+      description: 'View recent certifications',
+      action: () => (
+        <div className="space-y-3">
+          <div style={{ color: colors.brand, fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>╭─ Recent Certifications</div>
+          <div style={{ marginLeft: '1rem', display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
+            {certsData.length > 0 ? certsData.map((cert: any, idx: number) => (
+              <div key={idx} className="project-card" onClick={() => cert.link && window.open(cert.link, '_blank')} style={{ color: colors.neutral, opacity: cert.link ? 1 : 0.8 }}>
+                <div style={{ color: colors.accent, fontWeight: 'bold', marginBottom: '6px', fontSize: '0.95rem' }}>{cert.title}</div>
+                <div style={{ color: colors.neutralWeak, fontSize: '0.8rem', marginBottom: '4px' }}>{cert.issuer}</div>
+                <div style={{ color: colors.neutralWeak, fontSize: '0.75rem', marginBottom: '8px' }}>📅 {cert.issueDate}</div>
+                {cert.link && <div style={{ color: colors.brand, fontSize: '0.75rem', fontWeight: '500' }}>→ View Credential</div>}
+              </div>
+            )) : (
+              <div style={{ color: colors.neutralWeak }}>No certifications found yet.</div>
+            )}
+          </div>
+        </div>
+      )
     },
     whoami: {
       description: 'Display current user',
@@ -197,10 +245,6 @@ const CLIPage = () => {
           </div>
         );
       }
-    },
-    echo: {
-      description: 'Echo a message',
-      action: (args: string[]) => <div style={{ color: colors.neutral }}>{args.join(' ')}</div>
     },
     gui: {
       description: 'Switch to GUI portfolio',
@@ -389,11 +433,10 @@ const CLIPage = () => {
       }
     } else if (e.key === 'Tab') {
       e.preventDefault();
-      const matches = Object.keys(commands).filter(cmd =>
-        cmd.startsWith(input.toLowerCase())
-      );
-      if (matches.length === 1) {
+      const matches = Object.keys(commands).filter(cmd => cmd.startsWith(input.toLowerCase()));
+      if (matches.length > 0) {
         setInput(matches[0]);
+        setSuggestions([]);
       }
     } else if (e.ctrlKey && e.key === 'l') {
       e.preventDefault();
@@ -423,12 +466,31 @@ const CLIPage = () => {
         left: 0,
       }}
     >
+      {/* Header Bar */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        padding: '12px 20px',
+        background: colors.backgroundContent,
+        borderBottom: `1px solid ${colors.border}`,
+        backdropFilter: 'blur(10px)',
+      }}>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: 'linear-gradient(90deg, #ff7b7b, #ff5252)' }} />
+          <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: 'linear-gradient(90deg, #ffd27f, #ffb84d)' }} />
+          <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: 'linear-gradient(90deg, #7bff9a, #2dd36f)' }} />
+        </div>
+        <div style={{ color: colors.neutralWeak, fontSize: '0.9rem', marginLeft: '12px', flex: 1 }}>{person.firstName}'s CLI</div>
+        <div style={{ color: colors.neutralWeak, fontSize: '0.85rem' }}>{new Date().toLocaleDateString()}</div>
+      </div>
+
       {/* Terminal Content Area */}
       <div
         ref={terminalRef}
         className="flex-1 overflow-y-auto cli-terminal"
         style={{
-          padding: '2rem',
+          padding: isMobile ? '1rem' : '2rem',
           backgroundColor: colors.background,
           scrollbarWidth: 'thin',
           scrollbarColor: `${colors.neutralWeak} transparent`,
@@ -438,7 +500,7 @@ const CLIPage = () => {
           <div key={index} className="mb-2">
             {item.type === 'input' ? (
               <div className="flex gap-2 items-center">
-                <span style={{ color: colors.accent }}>{person.firstName.toLowerCase()}@portfolio:~$</span>
+                <span style={{ color: colors.accent }}>{`${person.firstName.toLowerCase()}@portfolio`}</span>
                 <span style={{ color: colors.neutral }}>{item.content}</span>
               </div>
             ) : (
@@ -452,12 +514,14 @@ const CLIPage = () => {
       <div
         style={{
           borderTop: `1px solid ${colors.brand}`,
-          padding: '1rem 2rem',
+          padding: isMobile ? '0.75rem 1rem' : '1rem 2rem',
           backgroundColor: colors.background,
         }}
       >
-        <div className="flex gap-2 items-center" style={{ marginBottom: '0.5rem' }}>
-          <span style={{ color: colors.accent }}>{person.firstName.toLowerCase()}@portfolio:~$</span>
+        <div className={isMobile ? 'flex items-center' : 'flex gap-2 items-center'} style={{ marginBottom: '0.5rem', gap: isMobile ? '0.25rem' : undefined }}>
+          <span style={{ color: colors.accent, whiteSpace: 'nowrap', flexShrink: 0 }}>
+            {`${person.firstName.toLowerCase()}@portfolio:~$`}
+          </span>
           <input
             ref={inputRef}
             type="text"
@@ -466,6 +530,7 @@ const CLIPage = () => {
             onKeyDown={handleKeyDown}
             style={{
               flex: 1,
+              minWidth: 0,
               backgroundColor: 'transparent',
               outline: 'none',
               color: colors.neutral,
