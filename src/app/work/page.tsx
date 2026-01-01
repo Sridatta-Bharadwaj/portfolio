@@ -1,5 +1,5 @@
 import { Column, Heading, Meta, Schema, Text, Button, Row } from "@once-ui-system/core";
-import { baseURL, about, person, work } from "@/resources";
+import { baseURL, person, work } from "@/resources";
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -23,7 +23,7 @@ export default function Work() {
         image={`/api/og/generate?title=${encodeURIComponent(work.title)}`}
         author={{
           name: person.name,
-          url: `${baseURL}${about.path}`,
+          url: `${baseURL}/`,
           image: `${baseURL}${person.avatar}`,
         }}
       />
@@ -33,9 +33,9 @@ export default function Work() {
         <Heading variant="display-strong-xl" align="center">
           Projects
         </Heading>
-        <Text 
-          variant="body-default-l" 
-          onBackground="neutral-weak" 
+        <Text
+          variant="body-default-l"
+          onBackground="neutral-weak"
           align="center"
           wrap="balance"
           style={{ maxWidth: '600px' }}
@@ -45,10 +45,10 @@ export default function Work() {
       </Column>
 
       {/* Empty State with Illustration */}
-      <Column 
-        fillWidth 
-        horizontal="center" 
-        align="center" 
+      <Column
+        fillWidth
+        horizontal="center"
+        align="center"
         gap="l"
         paddingY="xl"
         style={{ minHeight: '400px' }}
@@ -60,14 +60,14 @@ export default function Work() {
         }}>
           🚧
         </div>
-        
+
         <Column gap="m" horizontal="center" align="center">
           <Heading variant="heading-strong-l" align="center">
             Under Construction
           </Heading>
-          <Text 
-            variant="body-default-m" 
-            onBackground="neutral-weak" 
+          <Text
+            variant="body-default-m"
+            onBackground="neutral-weak"
             align="center"
             style={{ maxWidth: '400px' }}
           >

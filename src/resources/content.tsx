@@ -1,4 +1,4 @@
-import { About, Blog, Gallery, Home, Newsletter, Person, Social, Work, Certifications } from "@/types";
+import { Blog, Gallery, Home, Newsletter, Person, Social, Work, Certifications } from "@/types";
 import { Line, Row, Text } from "@once-ui-system/core";
 
 const person: Person = {
@@ -41,12 +41,6 @@ const social: Social = [
     essential: true,
   },
   {
-    name: "Threads",
-    icon: "threads",
-    link: "https://www.threads.com/@once_ui",
-    essential: false,
-  },
-  {
     name: "Email",
     icon: "email",
     link: `mailto:${person.email}`,
@@ -83,158 +77,60 @@ const home: Home = {
 };
 
 
-const about: About = {
-  path: "/about",
-  label: "About",
-  title: `About – ${person.name}`,
-  description: `Meet ${person.name}, ${person.role} from ${person.location}`,
-  tableOfContent: {
-    display: true,
-    subItems: false,
-  },
-  avatar: {
-    display: true,
-  },
-  calendar: {
-    display: true,
-    link: "https://cal.com",
-  },
-  intro: {
-    display: true,
-    title: "Introduction",
+// Technical skills and studies data (displayed on home page)
+const skills = [
+  {
+    title: "Python",
     description: (
-      <>
-        I am a student at Amrita Vishwa Vidyapeetham, Chennai campus, with a strong interest in computer science, algorithms, and building a solid conceptual foundation in technology. I enjoy problem-solving, breaking down complex ideas into simple explanations, and presenting technical concepts clearly through code and visuals. My work spans programming, algorithm analysis, statistics, and technical presentations, with a focus on clarity, consistency, and continuous learning. I am actively exploring tools, technologies, and ideas that bridge theory with practical application.
-      </>
+      <>Skilled in Python for algorithms, data structures, and problem-solving.</>
     ),
-  },
-  work: {
-    display: true, // set to false to hide this section
-    title: "Work Experience",
-    experiences: [
+    tags: [
       {
-        company: "FLY",
-        timeframe: "2022 - Present",
-        role: "Senior Design Engineer",
-        achievements: [
-          <>
-            Redesigned the UI/UX for the FLY platform, resulting in a 20% increase in user
-            engagement and 30% faster load times.
-          </>,
-          <>
-            Spearheaded the integration of AI tools into design workflows, enabling designers to
-            iterate 50% faster.
-          </>,
-        ],
-        images: [
-          // optional: leave the array empty if you don't want to display images
-          {
-            src: "/images/projects/project-01/cover-01.jpg",
-            alt: "Once UI Project",
-            width: 16,
-            height: 9,
-          },
-        ],
-      },
-      {
-        company: "Creativ3",
-        timeframe: "2018 - 2022",
-        role: "Lead Designer",
-        achievements: [
-          <>
-            Developed a design system that unified the brand across multiple platforms, improving
-            design consistency by 40%.
-          </>,
-          <>
-            Led a cross-functional team to launch a new product line, contributing to a 15% increase
-            in overall company revenue.
-          </>,
-        ],
-        images: [],
+        name: "Python",
+        icon: "python",
       },
     ],
   },
-  studies: {
-    display: true, // set to false to hide this section
-    title: "Studies",
-    institutions: [
+  {
+    title: "HTML",
+    description: (
+      <>Proficient in semantic HTML markup and web structure.</>
+    ),
+    tags: [
       {
-        name: "Amrita Vishwa Vidyapeetham",
-        description: <>Persued my B.tech in CSE with Minor in AI&ML.</>,
-      },
-      {
-        name: "Sri Vasistha Jr College",
-        description: <>Studied Intermediate or class 11 and class 12.</>,
-      },
-      {
-        name: "Matrusri DAV Public School",
-        description: <>Studied class 1 - class 10.</>,
+        name: "HTML",
+        icon: "html",
       },
     ],
   },
-  technical: {
-    display: true, // set to false to hide this section
-    title: "Technical skills",
-    skills: [
+  {
+    title: "CSS",
+    description: (
+      <>Expert in styling with CSS3, responsive design, and animations.</>
+    ),
+    tags: [
       {
-        title: "Figma",
-        description: (
-          <>Able to prototype in Figma with Once UI with unnatural speed.</>
-        ),
-        tags: [
-          {
-            name: "Figma",
-            icon: "figma",
-          },
-        ],
-        // optional: leave the array empty if you don't want to display images
-        images: [
-          {
-            src: "/images/projects/project-01/cover-02.jpg",
-            alt: "Project image",
-            width: 16,
-            height: 9,
-          },
-          {
-            src: "/images/projects/project-01/cover-03.jpg",
-            alt: "Project image",
-            width: 16,
-            height: 9,
-          },
-        ],
-      },
-      {
-        title: "Next.js",
-        description: (
-          <>Building next gen apps with Next.js + Once UI + Supabase.</>
-        ),
-        tags: [
-          {
-            name: "JavaScript",
-            icon: "javascript",
-          },
-          {
-            name: "Next.js",
-            icon: "nextjs",
-          },
-          {
-            name: "Supabase",
-            icon: "supabase",
-          },
-        ],
-        // optional: leave the array empty if you don't want to display images
-        images: [
-          {
-            src: "/images/projects/project-01/cover-04.jpg",
-            alt: "Project image",
-            width: 16,
-            height: 9,
-          },
-        ],
+        name: "CSS",
+        icon: "css",
       },
     ],
   },
-};
+];
+
+const studies = [
+  {
+    name: "Amrita Vishwa Vidyapeetham",
+    description: <>Persued my B.tech in CSE with Minor in AI&ML.</>,
+  },
+  {
+    name: "Sri Vasistha Jr College",
+    description: <>Studied Intermediate or class 11 and class 12.</>,
+  },
+  {
+    name: "Matrusri DAV Public School",
+    description: <>Studied class 1 - class 10.</>,
+  },
+];
 
 
 const work: Work = {
@@ -298,4 +194,4 @@ const certifications: Certifications = {
 };
 
 
-export { person, social, newsletter, home, about, work, certifications };
+export { person, social, newsletter, home, work, certifications, skills, studies };

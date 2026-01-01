@@ -42,7 +42,7 @@ export const GitHubCalendar: React.FC = () => {
                 <Heading variant="heading-strong-l" align="center">
                     @{username}'s GitHub Contributions
                 </Heading>
-                <div style={{
+                <div className="github-calendar-container" style={{
                     width: '100%',
                     maxWidth: '900px',
                     padding: '1rem',

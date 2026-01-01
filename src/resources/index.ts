@@ -4,9 +4,10 @@ export {
   social,
   newsletter,
   home,
-  about,
   work,
   certifications,
+  skills,
+  studies,
 } from "./content";
 
 export {

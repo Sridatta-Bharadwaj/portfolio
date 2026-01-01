@@ -14,7 +14,7 @@ import {
   Card,
   Tag,
 } from "@once-ui-system/core";
-import { home, about, person, baseURL, routes, certifications } from "@/resources";
+import { home, person, baseURL, routes, certifications, skills, studies } from "@/resources";
 import { Projects } from "@/components/work/Projects";
 import { CertificationCard } from "@/components/certifications/CertificationCard";
 import { GitHubCalendar } from "@/components/GitHubCalendar";
@@ -48,7 +48,7 @@ export default function Home() {
         image={`/api/og/generate?title=${encodeURIComponent(home.title)}`}
         author={{
           name: person.name,
-          url: `${baseURL}${about.path}`,
+          url: `${baseURL}/`,
           image: `${baseURL}${person.avatar}`,
         }}
       />
@@ -101,7 +101,7 @@ export default function Home() {
               align="center"
               style={{ maxWidth: '600px' }}
             >
-              {about.intro.description}
+              Turning ideas into clean digital experiences through code and design.
             </Text>
           </RevealFx>
 
@@ -109,14 +109,13 @@ export default function Home() {
           <RevealFx paddingTop="12" delay={0.4} horizontal="center">
             <Row gap="12" wrap horizontal="center">
               <Button
-                id="about"
                 data-border="rounded"
-                href={about.path}
+                href="/work"
                 variant="primary"
                 size="m"
                 arrowIcon
               >
-                About Me
+                View Projects
               </Button>
               <Button
                 data-border="rounded"
@@ -153,7 +152,7 @@ export default function Home() {
             Technical Skills
           </Heading>
           <Grid columns="3" gap="16" fillWidth>
-            {about.technical.skills.slice(0, 3).map((skill, index) => (
+            {skills.slice(0, 3).map((skill: any, index: number) => (
               <Card
                 key={index}
                 padding="l"
@@ -170,13 +169,40 @@ export default function Home() {
                   )}
                   {skill.tags && skill.tags.length > 0 && (
                     <Row wrap gap="8" paddingTop="8">
-                      {skill.tags.map((tag, tagIndex) => (
+                      {skill.tags.map((tag: any, tagIndex: number) => (
                         <Tag key={tagIndex} size="s">
                           {tag.name}
                         </Tag>
                       ))}
                     </Row>
                   )}
+                </Column>
+              </Card>
+            ))}
+          </Grid>
+        </Column>
+      </RevealFx>
+
+      {/* Education Section */}
+      <RevealFx translateY="16" delay={0.65}>
+        <Column fillWidth gap="m" horizontal="center">
+          <Heading as="h2" variant="heading-strong-xl" align="center">
+            Education
+          </Heading>
+          <Grid columns="3" gap="16" fillWidth>
+            {studies.map((study: any, index: number) => (
+              <Card
+                key={index}
+                padding="l"
+                radius="m"
+                border="neutral-alpha-weak"
+                background="surface"
+              >
+                <Column gap="8">
+                  <Text variant="heading-strong-m">{study.name}</Text>
+                  <Text variant="body-default-s" onBackground="neutral-weak">
+                    {study.description}
+                  </Text>
                 </Column>
               </Card>
             ))}

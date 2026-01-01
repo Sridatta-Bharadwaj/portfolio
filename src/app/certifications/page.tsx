@@ -6,7 +6,7 @@ import {
     Text,
     Grid,
 } from "@once-ui-system/core";
-import { baseURL, about, person, certifications } from "@/resources";
+import { baseURL, person, certifications } from "@/resources";
 import { CertificationCard } from "@/components/certifications/CertificationCard";
 
 export async function generateMetadata() {
@@ -36,7 +36,7 @@ export default function Certifications() {
                 image={`/api/og/generate?title=${encodeURIComponent(certifications.title)}`}
                 author={{
                     name: person.name,
-                    url: `${baseURL}${about.path}`,
+                    url: `${baseURL}/`,
                     image: `${baseURL}${person.avatar}`,
                 }}
             />
@@ -59,7 +59,7 @@ export default function Certifications() {
 
             {/* Certifications Grid */}
             {sortedCerts.length > 0 ? (
-                <Grid columns="2" gap="16" fillWidth>
+                <Grid columns="2" gap="16" fillWidth s={{ columns: 1 }}>
                     {sortedCerts.map((cert, index) => (
                         <CertificationCard key={index} cert={cert} />
                     ))}
