@@ -1,4 +1,4 @@
-import {
+  import {
   Heading,
   Text,
   Button,
@@ -179,6 +179,37 @@ export default function Home() {
               </Card>
             ))}
           </Grid>
+        </Column>
+      </RevealFx>
+
+      {/* Latest Projects */}
+      <RevealFx translateY="16" delay={0.65}>
+        <Column fillWidth gap="m" horizontal="center">
+          <Row fillWidth horizontal="between" vertical="center">
+            <Heading as="h2" variant="heading-strong-xl">
+              Latest Projects
+            </Heading>
+          </Row>
+          <Column
+            fillWidth
+            horizontal="center"
+            vertical="center"
+            gap="m"
+            padding="xl"
+            style={{ minHeight: "300px" }}
+          >
+            <Heading variant="heading-strong-l" align="center">
+              Coming Soon
+            </Heading>
+            <Text
+              variant="body-default-m"
+              onBackground="neutral-weak"
+              align="center"
+              style={{ maxWidth: "400px" }}
+            >
+              I'm working on some amazing projects. Check back soon to see what I've been building!
+            </Text>
+          </Column>
         </Column>
       </RevealFx>
 

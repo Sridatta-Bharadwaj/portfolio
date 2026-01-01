@@ -44,21 +44,22 @@ export const GitHubCalendar: React.FC = () => {
                 </Heading>
                 <div className="github-calendar-container" style={{
                     width: '100%',
-                    maxWidth: '900px',
-                    padding: '1rem',
+                    padding: '1.5rem',
                     borderRadius: '0.5rem',
                     backgroundColor: '#000000',
                     border: '1px solid #1a1a1a',
                     display: 'flex',
-                    justifyContent: 'center'
+                    justifyContent: 'center',
+                    overflow: 'auto'
                 }}>
                     <img
                         src={`https://ghchart.rshah.org/${githubColor}/${username}`}
                         alt={`${username}'s GitHub Contribution Graph`}
                         style={{
                             width: '100%',
+                            minWidth: '1000px',
                             height: 'auto',
-                            imageRendering: '-webkit-optimize-contrast',
+                            imageRendering: 'crisp-edges',
                             filter: 'invert(1) hue-rotate(180deg)',
                         }}
                     />
