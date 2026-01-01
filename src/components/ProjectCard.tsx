@@ -2,13 +2,14 @@
 
 import {
   AvatarGroup,
-  Carousel,
+  Card,
   Column,
   Flex,
   Heading,
   SmartLink,
   Text,
 } from "@once-ui-system/core";
+import styles from "./ProjectCard.module.scss";
 
 interface ProjectCardProps {
   href: string;
@@ -30,46 +31,50 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   avatars,
   link,
 }) => {
+  const backgroundImage = images?.[0];
+
   return (
-    <Column fillWidth gap="m">
-      <Carousel
-        sizes="(max-width: 960px) 100vw, 960px"
-        items={images.map((image) => ({
-          slide: image,
-          alt: title,
-        }))}
-      />
-      <Flex
-        s={{ direction: "column" }}
-        fillWidth
-        paddingX="s"
-        paddingTop="12"
-        paddingBottom="24"
-        gap="l"
-      >
+    <Card
+      className={styles.projectCard}
+      as="div"
+      radius="m"
+      border="neutral-alpha-weak"
+      padding="l"
+      style={{
+        backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      {backgroundImage && <div className={styles.overlay} />}
+      
+      <Column className={styles.content} fillWidth gap="m">
         {title && (
-          <Flex flex={5}>
-            <Heading as="h2" wrap="balance" variant="heading-strong-xl">
-              {title}
-            </Heading>
-          </Flex>
+          <Heading as="h2" wrap="balance" variant="heading-strong-l" style={{ color: "white" }}>
+            {title}
+          </Heading>
         )}
-        {(avatars?.length > 0 || description?.trim() || content?.trim()) && (
-          <Column flex={7} gap="16">
+        
+        {description?.trim() && (
+          <Text wrap="balance" variant="body-default-s" style={{ color: "rgba(255, 255, 255, 0.9)" }}>
+            {description}
+          </Text>
+        )}
+        
+        {(avatars?.length > 0 || content?.trim() || link) && (
+          <Column gap="12" paddingTop="8">
             {avatars?.length > 0 && <AvatarGroup avatars={avatars} size="m" reverse />}
-            {description?.trim() && (
-              <Text wrap="balance" variant="body-default-s" onBackground="neutral-weak">
-                {description}
-              </Text>
-            )}
-            <Flex gap="24" wrap>
+            
+            <Flex gap="16" wrap>
               {content?.trim() && (
                 <SmartLink
                   suffixIcon="arrowRight"
                   style={{ margin: "0", width: "fit-content" }}
                   href={href}
                 >
-                  <Text variant="body-default-s">Read case study</Text>
+                  <Text variant="body-default-s" style={{ color: "white" }}>
+                    Read case study
+                  </Text>
                 </SmartLink>
               )}
               {link && (
@@ -78,13 +83,15 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                   style={{ margin: "0", width: "fit-content" }}
                   href={link}
                 >
-                  <Text variant="body-default-s">View project</Text>
+                  <Text variant="body-default-s" style={{ color: "white" }}>
+                    View project
+                  </Text>
                 </SmartLink>
               )}
             </Flex>
           </Column>
         )}
-      </Flex>
-    </Column>
+      </Column>
+    </Card>
   );
 };
