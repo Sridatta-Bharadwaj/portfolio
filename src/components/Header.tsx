@@ -136,7 +136,7 @@ export const Header = () => {
                     <ToggleButton
                       prefixIcon="terminal"
                       href="/cli"
-                      label={"cli"}
+                      label={"CLI"}
                       selected={pathname.startsWith("/cli")}
                     />
                   </Row>
