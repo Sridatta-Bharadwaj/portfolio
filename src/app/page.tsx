@@ -14,7 +14,7 @@ import {
   Card,
   Tag,
 } from "@once-ui-system/core";
-import { home, person, baseURL, routes, certifications, skills, studies } from "@/resources";
+import { home, person, baseURL, routes, certifications, skills } from "@/resources";
 import { Projects } from "@/components/work/Projects";
 import { CertificationCard } from "@/components/certifications/CertificationCard";
 import { GitHubCalendar } from "@/components/GitHubCalendar";
@@ -183,30 +183,23 @@ export default function Home() {
         </Column>
       </RevealFx>
 
-      {/* Education Section */}
+      {/* Latest Projects */}
       <RevealFx translateY="16" delay={0.65}>
         <Column fillWidth gap="m" horizontal="center">
-          <Heading as="h2" variant="heading-strong-xl" align="center">
-            Education
-          </Heading>
-          <Grid columns="3" gap="16" fillWidth s={{ columns: 1, gap: "m" }}>
-            {studies.map((study: any, index: number) => (
-              <Card
-                key={index}
-                padding="l"
-                radius="m"
-                border="neutral-alpha-weak"
-                background="surface"
-              >
-                <Column gap="8">
-                  <Text variant="heading-strong-m">{study.name}</Text>
-                  <Text variant="body-default-s" onBackground="neutral-weak">
-                    {study.description}
-                  </Text>
-                </Column>
-              </Card>
-            ))}
-          </Grid>
+          <Row fillWidth horizontal="between" vertical="center">
+            <Heading as="h2" variant="heading-strong-xl">
+              Latest Projects
+            </Heading>
+            <Button
+              href={routes["/work"] ? "/work" : "#"}
+              variant="tertiary"
+              size="s"
+              suffixIcon="arrowRight"
+            >
+              View All
+            </Button>
+          </Row>
+          <Projects range={[1, 3]} />
         </Column>
       </RevealFx>
 
