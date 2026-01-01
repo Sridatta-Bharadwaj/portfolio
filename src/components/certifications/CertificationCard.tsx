@@ -2,6 +2,7 @@
 
 import { Card, Column, Text, Row, Tag, Button } from "@once-ui-system/core";
 import { Certification } from "@/types";
+import styles from "./CertificationCard.module.scss";
 
 interface CertificationCardProps {
     cert: Certification;
@@ -10,6 +11,7 @@ interface CertificationCardProps {
 export function CertificationCard({ cert }: CertificationCardProps) {
     return (
         <Card
+            className={styles.card}
             padding="l"
             radius="m"
             border="neutral-alpha-weak"

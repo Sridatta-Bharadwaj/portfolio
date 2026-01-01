@@ -59,7 +59,7 @@ export default function Certifications() {
 
             {/* Certifications Grid */}
             {sortedCerts.length > 0 ? (
-                <Grid columns="2" gap="16" fillWidth s={{ columns: 1 }}>
+                <Grid columns="2" gap="16" fillWidth s={{ columns: 1, gap: "m" }}>
                     {sortedCerts.map((cert, index) => (
                         <CertificationCard key={index} cert={cert} />
                     ))}
