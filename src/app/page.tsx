@@ -151,7 +151,7 @@ export default function Home() {
           <Heading as="h2" variant="heading-strong-xl" align="center">
             Technical Skills
           </Heading>
-          <Grid columns="3" gap="16" fillWidth>
+          <Grid columns="3" gap="16" fillWidth s={{ columns: 1, gap: "m" }}>
             {skills.slice(0, 3).map((skill: any, index: number) => (
               <Card
                 key={index}
@@ -189,7 +189,7 @@ export default function Home() {
           <Heading as="h2" variant="heading-strong-xl" align="center">
             Education
           </Heading>
-          <Grid columns="3" gap="16" fillWidth>
+          <Grid columns="3" gap="16" fillWidth s={{ columns: 1, gap: "m" }}>
             {studies.map((study: any, index: number) => (
               <Card
                 key={index}
@@ -226,7 +226,7 @@ export default function Home() {
               View All
             </Button>
           </Row>
-          <Grid columns="3" gap="16" fillWidth>
+          <Grid columns="3" gap="16" fillWidth s={{ columns: 1, gap: "m" }}>
             {latestCertifications.length > 0 ? (
               latestCertifications.map((cert, index) => (
                 <CertificationCard key={index} cert={cert} />
