@@ -11,6 +11,15 @@ const CLIPage = () => {
 
   // Add scrollbar styles dynamically
   useEffect(() => {
+    // Set viewport meta tag for mobile
+    let viewport = document.querySelector('meta[name="viewport"]');
+    if (!viewport) {
+      viewport = document.createElement('meta');
+      viewport.setAttribute('name', 'viewport');
+      document.head.appendChild(viewport);
+    }
+    viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+
     const style = document.createElement('style');
     style.textContent = `
       .cli-terminal::-webkit-scrollbar {
@@ -467,12 +476,14 @@ const CLIPage = () => {
         display: 'flex',
         flexDirection: 'column',
         width: '100vw',
-        height: '100vh',
+        height: isMobile ? '100dvh' : '100vh',
+        minHeight: isMobile ? '100dvh' : '100vh',
         margin: 0,
         padding: 0,
-        position: 'fixed',
+        position: isMobile ? 'relative' : 'fixed',
         top: 0,
         left: 0,
+        overflow: 'hidden',
       }}
     >
       {/* Header Bar */}
@@ -500,11 +511,13 @@ const CLIPage = () => {
         className="flex-1 overflow-y-auto cli-terminal"
         style={{
           padding: isMobile ? '1rem' : '2rem',
-          paddingBottom: isMobile ? '8rem' : '2rem',
+          paddingBottom: isMobile ? '2rem' : '2rem',
           backgroundColor: colors.background,
           scrollbarWidth: 'thin',
           scrollbarColor: `${colors.neutralWeak} transparent`,
           minHeight: 0,
+          overflowY: 'auto',
+          WebkitOverflowScrolling: 'touch',
         }}
       >
         {history.map((item, index) => (
@@ -525,17 +538,17 @@ const CLIPage = () => {
       <div
         ref={inputContainerRef}
         style={{
-          borderTop: `1px solid ${colors.brand}`,
-          padding: isMobile ? '0.75rem 1rem' : '1rem 2rem',
-          paddingBottom: isMobile ? 'calc(0.75rem + env(safe-area-inset-bottom))' : '1rem',
+          borderTop: `2px solid ${colors.brand}`,
+          padding: isMobile ? '1rem' : '1rem 2rem',
+          paddingBottom: isMobile ? 'calc(1rem + env(safe-area-inset-bottom))' : '1rem',
           backgroundColor: colors.background,
           flexShrink: 0,
-          minHeight: isMobile ? '80px' : 'auto',
           width: '100%',
+          boxShadow: isMobile ? `0 -4px 6px rgba(0,0,0,0.3)` : 'none',
         }}
       >
         <div className={isMobile ? 'flex items-center' : 'flex gap-2 items-center'} style={{ marginBottom: '0.5rem', gap: isMobile ? '0.5rem' : undefined }}>
-          <span style={{ color: colors.accent, whiteSpace: 'nowrap', flexShrink: 0, fontSize: isMobile ? '14px' : '1rem' }}>
+          <span style={{ color: colors.accent, whiteSpace: 'nowrap', flexShrink: 0, fontSize: isMobile ? '15px' : '1rem' }}>
             {`${person.firstName.toLowerCase()}@portfolio:~$`}
           </span>
           <input
@@ -555,6 +568,7 @@ const CLIPage = () => {
               caretColor: colors.accent,
               border: 'none',
               fontSize: isMobile ? '16px' : '1rem',
+              padding: isMobile ? '0.25rem 0' : '0',
             }}
             autoFocus
             spellCheck={false}
