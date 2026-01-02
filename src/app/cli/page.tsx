@@ -450,10 +450,10 @@ const CLIPage = () => {
   };
 
   const handleInputFocus = () => {
-    if (isMobile && inputContainerRef.current) {
+    if (isMobile && terminalRef.current) {
       setTimeout(() => {
-        inputContainerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
-      }, 300);
+        terminalRef.current?.scrollTo({ top: terminalRef.current.scrollHeight, behavior: 'smooth' });
+      }, 100);
     }
   };
 
@@ -527,13 +527,15 @@ const CLIPage = () => {
         style={{
           borderTop: `1px solid ${colors.brand}`,
           padding: isMobile ? '0.75rem 1rem' : '1rem 2rem',
-          paddingBottom: isMobile ? 'max(0.75rem, env(safe-area-inset-bottom))' : '1rem',
+          paddingBottom: isMobile ? 'calc(0.75rem + env(safe-area-inset-bottom))' : '1rem',
           backgroundColor: colors.background,
           flexShrink: 0,
+          minHeight: isMobile ? '80px' : 'auto',
+          width: '100%',
         }}
       >
-        <div className={isMobile ? 'flex items-center' : 'flex gap-2 items-center'} style={{ marginBottom: '0.5rem', gap: isMobile ? '0.25rem' : undefined }}>
-          <span style={{ color: colors.accent, whiteSpace: 'nowrap', flexShrink: 0 }}>
+        <div className={isMobile ? 'flex items-center' : 'flex gap-2 items-center'} style={{ marginBottom: '0.5rem', gap: isMobile ? '0.5rem' : undefined }}>
+          <span style={{ color: colors.accent, whiteSpace: 'nowrap', flexShrink: 0, fontSize: isMobile ? '14px' : '1rem' }}>
             {`${person.firstName.toLowerCase()}@portfolio:~$`}
           </span>
           <input
@@ -558,7 +560,7 @@ const CLIPage = () => {
             spellCheck={false}
           />
         </div>
-        <div style={{ color: colors.neutralWeak, fontSize: '0.875rem' }}>
+        <div style={{ color: colors.neutralWeak, fontSize: isMobile ? '0.75rem' : '0.875rem' }}>
           Type 'help' to list available commands
         </div>
       </div>
