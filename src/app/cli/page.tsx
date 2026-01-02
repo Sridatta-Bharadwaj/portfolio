@@ -494,6 +494,7 @@ const CLIPage = () => {
           backgroundColor: colors.background,
           scrollbarWidth: 'thin',
           scrollbarColor: `${colors.neutralWeak} transparent`,
+          minHeight: 0,
         }}
       >
         {history.map((item, index) => (
@@ -515,7 +516,11 @@ const CLIPage = () => {
         style={{
           borderTop: `1px solid ${colors.brand}`,
           padding: isMobile ? '0.75rem 1rem' : '1rem 2rem',
+          paddingBottom: isMobile ? 'max(0.75rem, env(safe-area-inset-bottom))' : '1rem',
           backgroundColor: colors.background,
+          position: isMobile ? 'sticky' : 'relative',
+          bottom: 0,
+          zIndex: 10,
         }}
       >
         <div className={isMobile ? 'flex items-center' : 'flex gap-2 items-center'} style={{ marginBottom: '0.5rem', gap: isMobile ? '0.25rem' : undefined }}>
@@ -537,7 +542,7 @@ const CLIPage = () => {
               fontFamily: 'monospace',
               caretColor: colors.accent,
               border: 'none',
-              fontSize: '1rem',
+              fontSize: isMobile ? '16px' : '1rem',
             }}
             autoFocus
             spellCheck={false}
