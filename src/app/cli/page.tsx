@@ -78,6 +78,7 @@ const CLIPage = () => {
   const [historyIndex, setHistoryIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
+  const inputContainerRef = useRef<HTMLDivElement>(null);
 
   // Dynamic commands using actual portfolio data
   const commands: Record<string, any> = {
@@ -448,6 +449,14 @@ const CLIPage = () => {
     inputRef.current?.focus();
   };
 
+  const handleInputFocus = () => {
+    if (isMobile && inputContainerRef.current) {
+      setTimeout(() => {
+        inputContainerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }, 300);
+    }
+  };
+
   return (
     <div
       className="font-mono"
@@ -491,6 +500,7 @@ const CLIPage = () => {
         className="flex-1 overflow-y-auto cli-terminal"
         style={{
           padding: isMobile ? '1rem' : '2rem',
+          paddingBottom: isMobile ? '8rem' : '2rem',
           backgroundColor: colors.background,
           scrollbarWidth: 'thin',
           scrollbarColor: `${colors.neutralWeak} transparent`,
@@ -513,14 +523,13 @@ const CLIPage = () => {
 
       {/* Input Area with Border */}
       <div
+        ref={inputContainerRef}
         style={{
           borderTop: `1px solid ${colors.brand}`,
           padding: isMobile ? '0.75rem 1rem' : '1rem 2rem',
           paddingBottom: isMobile ? 'max(0.75rem, env(safe-area-inset-bottom))' : '1rem',
           backgroundColor: colors.background,
-          position: isMobile ? 'sticky' : 'relative',
-          bottom: 0,
-          zIndex: 10,
+          flexShrink: 0,
         }}
       >
         <div className={isMobile ? 'flex items-center' : 'flex gap-2 items-center'} style={{ marginBottom: '0.5rem', gap: isMobile ? '0.25rem' : undefined }}>
@@ -533,6 +542,7 @@ const CLIPage = () => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
+            onFocus={handleInputFocus}
             style={{
               flex: 1,
               minWidth: 0,
