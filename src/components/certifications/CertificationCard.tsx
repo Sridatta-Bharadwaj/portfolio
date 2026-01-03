@@ -40,7 +40,7 @@ export function CertificationCard({ cert }: CertificationCardProps) {
 
                 {/* Footer with credential and link */}
                 {(cert.credentialId || cert.link) && (
-                    <Row fillWidth horizontal="between" vertical="center" paddingTop="8">
+                    <Row fillWidth horizontal="between" vertical="center" wrap paddingTop="8" gap="8">
                         {cert.credentialId && (
                             <Text variant="label-default-s" onBackground="neutral-weak">
                                 ID: {cert.credentialId}

@@ -34,57 +34,28 @@ export const GitHubCalendar: React.FC = () => {
     return (
         <Card
             fillWidth
-            padding="l"
+            padding="0"
             radius="m"
             border="neutral-alpha-weak"
             background="surface"
             style={{
-                overflow: 'hidden'
+                overflow: 'hidden',
+                backgroundColor: '#000000',
+                padding: '8px'
             }}
         >
-            <Column fillWidth horizontal="center" gap="m">
-                <Heading variant="heading-strong-l" align="center">
-                    @{username}'s GitHub Contributions
-                </Heading>
-                <div className="github-calendar-container" style={{
+            <img
+                key={cacheBreaker}
+                src={`https://ghchart.rshah.org/${githubColor}/${username}?t=${cacheBreaker}`}
+                alt={`${username}'s GitHub Contribution Graph`}
+                style={{
                     width: '100%',
-                    padding: '1.5rem',
-                    borderRadius: '0.5rem',
-                    backgroundColor: '#000000',
-                    border: '1px solid #1a1a1a',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    overflow: 'auto',
-                    scrollBehavior: 'smooth',
-                    /* Hide scrollbar but keep scroll functionality */
-                    msOverflowStyle: 'none',
-                    scrollbarWidth: 'none',
+                    height: 'auto',
+                    display: 'block',
+                    imageRendering: 'crisp-edges',
+                    filter: 'invert(1) hue-rotate(180deg)',
                 }}
-                    onWheel={(e) => {
-                        if (e.deltaY !== 0) {
-                            const container = e.currentTarget;
-                            container.scrollLeft += e.deltaY;
-                        }
-                    }}>
-                    <style>{`
-                        .github-calendar-container::-webkit-scrollbar {
-                            display: none;
-                        }
-                    `}</style>
-                    <img
-                        key={cacheBreaker}
-                        src={`https://ghchart.rshah.org/${githubColor}/${username}?t=${cacheBreaker}`}
-                        alt={`${username}'s GitHub Contribution Graph`}
-                        style={{
-                            width: '100%',
-                            minWidth: '1000px',
-                            height: 'auto',
-                            imageRendering: 'crisp-edges',
-                            filter: 'invert(1) hue-rotate(180deg)',
-                        }}
-                    />
-                </div>
-            </Column>
+            />
         </Card>
     );
 };

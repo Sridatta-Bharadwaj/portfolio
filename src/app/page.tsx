@@ -248,11 +248,12 @@ export default function Home() {
         </Column>
       </RevealFx>
 
+
       {/* GitHub Contributions */}
       <RevealFx translateY="16" delay={0.8}>
         <Column fillWidth gap="m" horizontal="center">
           <Heading as="h2" variant="heading-strong-xl" align="center">
-            GitHub Contributions
+            @Sridatta-Bharadwaj's GitHub Contributions
           </Heading>
           <GitHubCalendar />
         </Column>
